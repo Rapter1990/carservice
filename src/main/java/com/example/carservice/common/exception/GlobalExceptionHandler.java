@@ -1,5 +1,6 @@
 package com.example.carservice.common.exception;
 
+import com.example.carservice.auth.exception.*;
 import com.example.carservice.common.model.CustomError;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.commons.lang3.StringUtils;
@@ -93,6 +94,74 @@ public class GlobalExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(customError, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(PasswordNotValidException.class)
+    protected ResponseEntity<CustomError> handlePasswordNotValidException(final PasswordNotValidException ex) {
+
+        CustomError error = CustomError.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .header(CustomError.Header.VALIDATION_ERROR.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TokenAlreadyInvalidatedException.class)
+    protected ResponseEntity<CustomError> handleTokenAlreadyInvalidatedException(final TokenAlreadyInvalidatedException ex) {
+        CustomError error = CustomError.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .header(CustomError.Header.VALIDATION_ERROR.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserAlreadyExistException.class)
+    protected ResponseEntity<CustomError> handleUserAlreadyExistException(final UserAlreadyExistException ex) {
+        CustomError error = CustomError.builder()
+                .httpStatus(HttpStatus.CONFLICT)
+                .header(CustomError.Header.ALREADY_EXIST.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    protected ResponseEntity<CustomError> handleUserNotFoundException(final UserNotFoundException ex) {
+        CustomError error = CustomError.builder()
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .header(CustomError.Header.NOT_FOUND.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserStatusNotValidException.class)
+    protected ResponseEntity<CustomError> handleUserStatusNotValidException(final UserStatusNotValidException ex) {
+        CustomError error = CustomError.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .header(CustomError.Header.VALIDATION_ERROR.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UnAuthorizeAttemptException.class)
+    protected ResponseEntity<Object> handleUnAuthorizeAttempt(final UnAuthorizeAttemptException ex){
+
+        CustomError customError = CustomError.builder()
+                .httpStatus(HttpStatus.UNAUTHORIZED)
+                .header(CustomError.Header.AUTH_ERROR.getName())
+                .message(ex.getMessage())
+                .build();
+
+        return new ResponseEntity<>(customError, HttpStatus.UNAUTHORIZED);
     }
 
 }
