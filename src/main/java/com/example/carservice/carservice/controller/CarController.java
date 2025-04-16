@@ -35,7 +35,7 @@ public class CarController {
      * @return A {@link CustomResponse} containing the created car information.
      */
     @Operation(
-            summary = "Create a new car",
+            summary = "Assign Car to User",
             description = "Creates a car and assigns it to a user.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Car successfully created"),
@@ -45,10 +45,11 @@ public class CarController {
     )
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     @PostMapping
-    public CustomResponse<CarResponse> createCar(@RequestBody @Valid final CreateCarRequest createCarRequest) {
+    public CustomResponse<CarResponse> assignCarToUser(@RequestBody @Valid final CreateCarRequest createCarRequest) {
         Car createdCar = carService.assignCarToUser(createCarRequest);
         CarResponse response = carToCarResponseMapper.mapToResponse(createdCar);
         return CustomResponse.successOf(response);
     }
+
 }
 

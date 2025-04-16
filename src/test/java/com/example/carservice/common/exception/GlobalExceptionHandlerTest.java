@@ -2,6 +2,7 @@ package com.example.carservice.common.exception;
 
 import com.example.carservice.auth.exception.*;
 import com.example.carservice.base.AbstractBaseServiceTest;
+import com.example.carservice.carservice.exception.LicensePlateAlreadyExistsException;
 import com.example.carservice.common.model.CustomError;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -283,6 +284,28 @@ class GlobalExceptionHandlerTest extends AbstractBaseServiceTest {
         CustomError actualError = (CustomError) responseEntity.getBody(); // Cast response body
         checkCustomError(expectedError, actualError);
 
+    }
+
+    @Test
+    void givenLicensePlateAlreadyExistsException_whenHandleLicensePlateAlreadyExistsException_thenRespondWithConflict() {
+
+        // Given
+        LicensePlateAlreadyExistsException ex = new LicensePlateAlreadyExistsException("34 ABC 123");
+
+        CustomError expectedError = CustomError.builder()
+                .httpStatus(HttpStatus.CONFLICT)
+                .header(CustomError.Header.ALREADY_EXIST.getName())
+                .message("A car with this license plate already exists!\n Plate: 34 ABC 123")
+                .isSuccess(false)
+                .build();
+
+        // When
+        ResponseEntity<Object> responseEntity = globalExceptionHandler.handleLicensePlateAlreadyExistsException(ex);
+
+        // Then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+        CustomError actualError = (CustomError) responseEntity.getBody(); // Cast response body
+        checkCustomError(expectedError, actualError);
     }
 
     private void checkCustomError(CustomError expectedError, CustomError actualError) {

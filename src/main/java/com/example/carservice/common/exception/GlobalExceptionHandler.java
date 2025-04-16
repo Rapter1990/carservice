@@ -1,6 +1,7 @@
 package com.example.carservice.common.exception;
 
 import com.example.carservice.auth.exception.*;
+import com.example.carservice.carservice.exception.LicensePlateAlreadyExistsException;
 import com.example.carservice.common.model.CustomError;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.commons.lang3.StringUtils;
@@ -162,6 +163,18 @@ public class GlobalExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(customError, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(LicensePlateAlreadyExistsException.class)
+    protected ResponseEntity<Object> handleLicensePlateAlreadyExistsException(final LicensePlateAlreadyExistsException ex) {
+        CustomError customError = CustomError.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .header(CustomError.Header.ALREADY_EXIST.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+
+        return new ResponseEntity<>(customError, LicensePlateAlreadyExistsException.STATUS);
     }
 
 }
