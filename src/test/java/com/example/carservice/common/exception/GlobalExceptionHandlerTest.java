@@ -2,6 +2,7 @@ package com.example.carservice.common.exception;
 
 import com.example.carservice.auth.exception.*;
 import com.example.carservice.base.AbstractBaseServiceTest;
+import com.example.carservice.carservice.exception.CarNotFoundException;
 import com.example.carservice.carservice.exception.LicensePlateAlreadyExistsException;
 import com.example.carservice.common.model.CustomError;
 import jakarta.validation.ConstraintViolation;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -306,6 +308,30 @@ class GlobalExceptionHandlerTest extends AbstractBaseServiceTest {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
         CustomError actualError = (CustomError) responseEntity.getBody(); // Cast response body
         checkCustomError(expectedError, actualError);
+    }
+
+    @Test
+    void givenCarNotFoundException_whenHandleCarNotFoundException_thenRespondWithNotFound() {
+
+        // Given
+        String carId = UUID.randomUUID().toString();
+        CarNotFoundException ex = new CarNotFoundException(carId);
+
+        CustomError expectedError = CustomError.builder()
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .header(CustomError.Header.NOT_FOUND.getName())
+                .message("Car not found with the specified ID!\n Car ID: " + carId)
+                .isSuccess(false)
+                .build();
+
+        // When
+        ResponseEntity<CustomError> responseEntity = globalExceptionHandler.handleCarNotFoundException(ex);
+
+        // Then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        CustomError actualError = responseEntity.getBody();
+        checkCustomError(expectedError, actualError);
+
     }
 
     private void checkCustomError(CustomError expectedError, CustomError actualError) {

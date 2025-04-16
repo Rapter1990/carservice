@@ -1,6 +1,7 @@
 package com.example.carservice.common.exception;
 
 import com.example.carservice.auth.exception.*;
+import com.example.carservice.carservice.exception.CarNotFoundException;
 import com.example.carservice.carservice.exception.LicensePlateAlreadyExistsException;
 import com.example.carservice.common.model.CustomError;
 import jakarta.validation.ConstraintViolationException;
@@ -175,6 +176,18 @@ public class GlobalExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(customError, LicensePlateAlreadyExistsException.STATUS);
+    }
+
+    @ExceptionHandler(CarNotFoundException.class)
+    protected ResponseEntity<CustomError> handleCarNotFoundException(final CarNotFoundException ex) {
+        CustomError error = CustomError.builder()
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .header(CustomError.Header.NOT_FOUND.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+
+        return new ResponseEntity<>(error, CarNotFoundException.STATUS);
     }
 
 }
