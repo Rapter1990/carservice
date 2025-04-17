@@ -5,6 +5,7 @@ import com.example.carservice.base.AbstractRestControllerTest;
 import com.example.carservice.builder.UserIdentityBuilder;
 import com.example.carservice.carservice.model.Car;
 import com.example.carservice.carservice.model.dto.request.car.CreateCarRequest;
+import com.example.carservice.carservice.model.dto.request.car.UpdateCarRequest;
 import com.example.carservice.carservice.model.dto.response.CarResponse;
 import com.example.carservice.carservice.model.enums.CarStatus;
 import com.example.carservice.carservice.model.mapper.car.CarToCarResponseMapper;
@@ -180,11 +181,10 @@ class CarControllerTest extends AbstractRestControllerTest {
     void testGetCarById_AsOwner_ReturnsCar() throws Exception {
 
         // Given
-        String userId = userIdentityBuilder.extractUserIdFromToken(mockUserToken.getAccessToken());
+        final String userId = userIdentityBuilder.extractUserIdFromToken(mockUserToken.getAccessToken());
+        final String carId = UUID.randomUUID().toString();
 
-        String carId = UUID.randomUUID().toString();
-
-        Car car = Car.builder()
+        final Car car = Car.builder()
                 .id(carId)
                 .licensePlate("34 ABC 123")
                 .model("Civic")
@@ -195,7 +195,7 @@ class CarControllerTest extends AbstractRestControllerTest {
                 .serviceList(Collections.emptyList())
                 .build();
 
-        CarResponse expected = carToCarResponseMapper.mapToResponse(car);
+        final CarResponse expected = carToCarResponseMapper.mapToResponse(car);
 
         // When
         when(carService.getCarById(carId)).thenReturn(car);
@@ -228,9 +228,9 @@ class CarControllerTest extends AbstractRestControllerTest {
     void testGetCarById_AsAdmin_ReturnsCar() throws Exception {
 
         // Given
-        String carId = UUID.randomUUID().toString();
+        final String carId = UUID.randomUUID().toString();
 
-        Car car = Car.builder()
+        final Car car = Car.builder()
                 .id(carId)
                 .licensePlate("06 XYZ 789")
                 .model("Model S")
@@ -241,7 +241,7 @@ class CarControllerTest extends AbstractRestControllerTest {
                 .serviceList(Collections.emptyList())
                 .build();
 
-        CarResponse expected = carToCarResponseMapper.mapToResponse(car);
+        final CarResponse expected = carToCarResponseMapper.mapToResponse(car);
 
         // When
         when(carService.getCarById(carId)).thenReturn(car);
@@ -274,7 +274,7 @@ class CarControllerTest extends AbstractRestControllerTest {
     void givenCarId_whenGetCarWithoutToken_thenReturnUnauthorized() throws Exception {
 
         // Given
-        String carId = UUID.randomUUID().toString();
+        final String carId = UUID.randomUUID().toString();
 
         // When & Then
         mockMvc.perform(get("/api/v1/cars/" + carId)
@@ -291,16 +291,16 @@ class CarControllerTest extends AbstractRestControllerTest {
     void testGetAllCarsByUser_ReturnsPagedCars() throws Exception {
 
         // Given
-        String userId = UUID.randomUUID().toString();
+        final String userId = UUID.randomUUID().toString();
 
-        CustomPagingRequest pagingRequest = CustomPagingRequest.builder()
+        final CustomPagingRequest pagingRequest = CustomPagingRequest.builder()
                 .pagination(CustomPaging.builder()
                         .pageNumber(1)
                         .pageSize(10)
                         .build())
                 .build();
 
-        List<Car> carList = List.of(
+        final List<Car> carList = List.of(
                 Car.builder()
                         .id(UUID.randomUUID().toString())
                         .licensePlate("34 USER 001")
@@ -321,15 +321,15 @@ class CarControllerTest extends AbstractRestControllerTest {
                         .build()
         );
 
-        PageRequest pageRequest = PageRequest.of(0, 10);
-        Page<Car> carPage = new PageImpl<>(carList, pageRequest, carList.size());
-        CustomPage<Car> customPage = CustomPage.of(carList, carPage);
+        final PageRequest pageRequest = PageRequest.of(0, 10);
+        final Page<Car> carPage = new PageImpl<>(carList, pageRequest, carList.size());
+        final CustomPage<Car> customPage = CustomPage.of(carList, carPage);
 
         // When
         when(carService.getAllCarsByUser(eq(userId), any(CustomPagingRequest.class))).thenReturn(customPage);
 
         // Then
-        mockMvc.perform(get("/api/v1/cars/users/{userId}", userId)
+        mockMvc.perform(post("/api/v1/cars/users/{userId}", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(pagingRequest))
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockUserToken.getAccessToken()))
@@ -360,14 +360,14 @@ class CarControllerTest extends AbstractRestControllerTest {
     void testGetAllCars_AsAdmin_ReturnsPagedCars() throws Exception {
 
         // Given
-        CustomPagingRequest pagingRequest = CustomPagingRequest.builder()
+        final CustomPagingRequest pagingRequest = CustomPagingRequest.builder()
                 .pagination(CustomPaging.builder()
                         .pageNumber(1)
                         .pageSize(10)
                         .build())
                 .build();
 
-        List<Car> carList = List.of(
+        final List<Car> carList = List.of(
                 Car.builder()
                         .id(UUID.randomUUID().toString())
                         .licensePlate("06 ADMIN 001")
@@ -388,16 +388,16 @@ class CarControllerTest extends AbstractRestControllerTest {
                         .build()
         );
 
-        PageRequest pageRequest = PageRequest.of(0, 10);
-        Page<Car> carPage = new PageImpl<>(carList, pageRequest, carList.size());
+        final PageRequest pageRequest = PageRequest.of(0, 10);
+        final Page<Car> carPage = new PageImpl<>(carList, pageRequest, carList.size());
 
-        CustomPage<Car> customPage = CustomPage.of(carList, carPage);
+        final CustomPage<Car> customPage = CustomPage.of(carList, carPage);
 
         // When
         when(carService.getAllCars(any(CustomPagingRequest.class))).thenReturn(customPage);
 
         // Then
-        mockMvc.perform(get("/api/v1/cars/all")
+        mockMvc.perform(post("/api/v1/cars/all")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(pagingRequest))
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockAdminToken.getAccessToken()))
@@ -420,6 +420,143 @@ class CarControllerTest extends AbstractRestControllerTest {
 
         // Verify
         verify(carService).getAllCars(any(CustomPagingRequest.class));
+
+    }
+
+    @Test
+    void testGetAllCarsByActiveStatus_AsAdmin_ReturnsPagedActiveCars() throws Exception {
+
+        // Given
+        final CustomPagingRequest pagingRequest = CustomPagingRequest.builder()
+                .pagination(CustomPaging.builder()
+                        .pageNumber(1)
+                        .pageSize(10)
+                        .build())
+                .build();
+
+        final List<Car> carList = List.of(
+                Car.builder()
+                        .id(UUID.randomUUID().toString())
+                        .licensePlate("06 ACTIVE 001")
+                        .brand("Opel")
+                        .model("Astra")
+                        .status(CarStatus.ACTIVE)
+                        .userId(UUID.randomUUID().toString())
+                        .serviceList(Collections.emptyList())
+                        .build(),
+                Car.builder()
+                        .id(UUID.randomUUID().toString())
+                        .licensePlate("06 ACTIVE 002")
+                        .brand("Hyundai")
+                        .model("Elantra")
+                        .status(CarStatus.ACTIVE)
+                        .userId(UUID.randomUUID().toString())
+                        .serviceList(Collections.emptyList())
+                        .build()
+        );
+
+        final Page<Car> carPage = new PageImpl<>(carList);
+        final CustomPage<Car> customPage = CustomPage.of(carList, carPage);
+
+        // When
+        when(carService.getAllCarsByStatus(any(CustomPagingRequest.class))).thenReturn(customPage);
+
+        // Then
+        mockMvc.perform(post("/api/v1/cars/allcarsByActiveStatus")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(pagingRequest))
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockAdminToken.getAccessToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.httpStatus").value("OK"))
+                .andExpect(jsonPath("$.isSuccess").value(true))
+                .andExpect(jsonPath("$.response.content").isArray())
+                .andExpect(jsonPath("$.response.content.length()").value(carList.size()))
+                .andExpect(jsonPath("$.response.content[0].status").value("ACTIVE"))
+                .andExpect(jsonPath("$.response.content[1].status").value("ACTIVE"));
+
+        verify(carService).getAllCarsByStatus(any(CustomPagingRequest.class));
+
+    }
+
+    @Test
+    void testUpdateCar_AsAdmin_ReturnsUpdatedCar() throws Exception {
+
+        // Given
+        final String carId = UUID.randomUUID().toString();
+        final String userId = userIdentityBuilder.extractUserIdFromToken(mockAdminToken.getAccessToken());
+
+        final UpdateCarRequest updateRequest = UpdateCarRequest.builder()
+                .licensePlate("06 UP 321")
+                .model("Passat")
+                .brand("Volkswagen")
+                .status(CarStatus.DELETED)
+                .userId(userId)
+                .build();
+
+        final Car updatedCar = Car.builder()
+                .id(carId)
+                .licensePlate(updateRequest.getLicensePlate())
+                .model(updateRequest.getModel())
+                .brand(updateRequest.getBrand())
+                .status(updateRequest.getStatus())
+                .userId(userId)
+                .user(User.builder()
+                        .id(userId)
+                        .firstName("Admin")
+                        .lastName("User")
+                        .build())
+                .serviceList(Collections.emptyList())
+                .build();
+
+        final CarResponse expected = carToCarResponseMapper.mapToResponse(updatedCar);
+
+        // When
+        when(carService.updateCar(eq(carId), any(UpdateCarRequest.class))).thenReturn(updatedCar);
+
+        // Then
+        mockMvc.perform(put("/api/v1/cars/" + carId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateRequest))
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockAdminToken.getAccessToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.httpStatus").value("OK"))
+                .andExpect(jsonPath("$.isSuccess").value(true))
+                .andExpect(jsonPath("$.response.id").value(expected.getId()))
+                .andExpect(jsonPath("$.response.licensePlate").value(expected.getLicensePlate()))
+                .andExpect(jsonPath("$.response.model").value(expected.getModel()))
+                .andExpect(jsonPath("$.response.brand").value(expected.getBrand()))
+                .andExpect(jsonPath("$.response.status").value(expected.getStatus().toString()))
+                .andExpect(jsonPath("$.response.userId").value(expected.getUserId()))
+                .andExpect(jsonPath("$.response.user.id").value(expected.getUser().getId()))
+                .andExpect(jsonPath("$.response.user.firstName").value(expected.getUser().getFirstName()))
+                .andExpect(jsonPath("$.response.user.lastName").value(expected.getUser().getLastName()))
+                .andExpect(jsonPath("$.response.serviceList").isArray());
+
+        // Verify
+        verify(carService).updateCar(eq(carId), any(UpdateCarRequest.class));
+
+    }
+
+    @Test
+    void testDeleteCar_AsAdmin_DeletesCarSuccessfully() throws Exception {
+
+        // Given
+        final String carId = UUID.randomUUID().toString();
+
+        // When & Then
+        mockMvc.perform(delete("/api/v1/cars/" + carId)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockAdminToken.getAccessToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.httpStatus").value("OK"))
+                .andExpect(jsonPath("$.isSuccess").value(true))
+                .andExpect(jsonPath("$.response").value("Car with ID " + carId + " is deleted"));
+
+        // Verify
+
+        verify(carService, times(1)).deleteCar(carId);
 
     }
 

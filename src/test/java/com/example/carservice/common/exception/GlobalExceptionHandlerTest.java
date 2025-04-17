@@ -3,6 +3,7 @@ package com.example.carservice.common.exception;
 import com.example.carservice.auth.exception.*;
 import com.example.carservice.base.AbstractBaseServiceTest;
 import com.example.carservice.carservice.exception.CarNotFoundException;
+import com.example.carservice.carservice.exception.CarStatusNotValidException;
 import com.example.carservice.carservice.exception.LicensePlateAlreadyExistsException;
 import com.example.carservice.common.model.CustomError;
 import jakarta.validation.ConstraintViolation;
@@ -329,6 +330,30 @@ class GlobalExceptionHandlerTest extends AbstractBaseServiceTest {
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        CustomError actualError = responseEntity.getBody();
+        checkCustomError(expectedError, actualError);
+
+    }
+
+    @Test
+    void givenCarStatusNotValidException_whenHandleCarStatusNotValidException_thenRespondWithBadRequest() {
+
+        // Given
+        String carId = UUID.randomUUID().toString();
+        CarStatusNotValidException ex = new CarStatusNotValidException(carId);
+
+        CustomError expectedError = CustomError.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .header(CustomError.Header.VALIDATION_ERROR.getName())
+                .message("Car status is not valid for the requested operation!\n Car ID: " + carId)
+                .isSuccess(false)
+                .build();
+
+        // When
+        ResponseEntity<CustomError> responseEntity = globalExceptionHandler.handleCarStatusNotValidException(ex);
+
+        // Then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         CustomError actualError = responseEntity.getBody();
         checkCustomError(expectedError, actualError);
 

@@ -2,6 +2,7 @@ package com.example.carservice.carservice.service;
 
 import com.example.carservice.carservice.model.Car;
 import com.example.carservice.carservice.model.dto.request.car.CreateCarRequest;
+import com.example.carservice.carservice.model.dto.request.car.UpdateCarRequest;
 import com.example.carservice.common.model.CustomPage;
 import com.example.carservice.common.model.dto.request.CustomPagingRequest;
 
@@ -14,5 +15,11 @@ public interface CarService {
     CustomPage<Car> getAllCars(final CustomPagingRequest pagingRequest);
 
     CustomPage<Car> getAllCarsByUser(final String userId, final CustomPagingRequest pagingRequest);
+
+    CustomPage<Car> getAllCarsByStatus(CustomPagingRequest pagingRequest);
+
+    Car updateCar(String carId, UpdateCarRequest request);
+
+    void deleteCar(String carId);
 
 }
