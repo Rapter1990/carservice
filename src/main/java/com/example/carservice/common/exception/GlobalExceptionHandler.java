@@ -1,9 +1,7 @@
 package com.example.carservice.common.exception;
 
 import com.example.carservice.auth.exception.*;
-import com.example.carservice.carservice.exception.CarNotFoundException;
-import com.example.carservice.carservice.exception.CarStatusNotValidException;
-import com.example.carservice.carservice.exception.LicensePlateAlreadyExistsException;
+import com.example.carservice.carservice.exception.*;
 import com.example.carservice.common.model.CustomError;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.commons.lang3.StringUtils;
@@ -202,6 +200,43 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(error, CarStatusNotValidException.STATUS);
     }
+
+    @ExceptionHandler(ServiceNotFoundException.class)
+    protected ResponseEntity<CustomError> handleServiceNotFoundException(final ServiceNotFoundException ex) {
+        CustomError error = CustomError.builder()
+                .httpStatus(ServiceNotFoundException.STATUS)
+                .header(CustomError.Header.NOT_FOUND.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+
+        return new ResponseEntity<>(error, ServiceNotFoundException.STATUS);
+    }
+
+    @ExceptionHandler(ServiceCarMismatchException.class)
+    protected ResponseEntity<CustomError> handleServiceCarMismatchException(final ServiceCarMismatchException ex) {
+        CustomError error = CustomError.builder()
+                .httpStatus(ServiceCarMismatchException.STATUS)
+                .header(CustomError.Header.VALIDATION_ERROR.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+
+        return new ResponseEntity<>(error, ServiceCarMismatchException.STATUS);
+    }
+
+    @ExceptionHandler(ServiceTitleAlreadyExistsException.class)
+    protected ResponseEntity<CustomError> handleServiceTitleAlreadyExistsException(final ServiceTitleAlreadyExistsException ex) {
+        CustomError error = CustomError.builder()
+                .httpStatus(ServiceTitleAlreadyExistsException.STATUS)
+                .header(CustomError.Header.VALIDATION_ERROR.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+
+        return new ResponseEntity<>(error, ServiceTitleAlreadyExistsException.STATUS);
+    }
+
 
 
 }

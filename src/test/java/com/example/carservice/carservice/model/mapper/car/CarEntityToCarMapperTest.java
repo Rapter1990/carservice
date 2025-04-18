@@ -2,7 +2,7 @@ package com.example.carservice.carservice.model.mapper.car;
 
 import com.example.carservice.auth.model.entity.UserEntity;
 import com.example.carservice.carservice.model.Car;
-import com.example.carservice.carservice.model.Service;
+import com.example.carservice.carservice.model.ServiceDto;
 import com.example.carservice.carservice.model.entity.CarEntity;
 import com.example.carservice.carservice.model.entity.ServiceEntity;
 import com.example.carservice.carservice.model.enums.CarStatus;
@@ -141,7 +141,7 @@ class CarEntityToCarMapperTest {
         assertNotNull(result.getServiceList());
         assertEquals(1, result.getServiceList().size());
 
-        Service service = result.getServiceList().get(0);
+        ServiceDto service = result.getServiceList().get(0);
         assertNotNull(service);
         assertEquals(serviceEntity.getId(), service.getId());
         assertEquals(serviceEntity.getDescription(), service.getDescription());

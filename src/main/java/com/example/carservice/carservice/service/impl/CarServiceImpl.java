@@ -19,6 +19,7 @@ import com.example.carservice.carservice.model.mapper.car.ListCarEntityToListCar
 import com.example.carservice.carservice.model.mapper.car.UpdateCarRequestToCarEntityMapper;
 import com.example.carservice.carservice.repository.CarRepository;
 import com.example.carservice.carservice.service.CarService;
+import com.example.carservice.carservice.utils.UserPermissionUtils;
 import com.example.carservice.common.model.CustomPage;
 import com.example.carservice.common.model.dto.request.CustomPagingRequest;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +50,7 @@ public class CarServiceImpl implements CarService {
     @Transactional
     public Car assignCarToUser(CreateCarRequest createCarRequest) {
 
-        this.checkCurrentUser(createCarRequest.getUserId());
+        UserPermissionUtils.checkAccessPermission(userIdentity, createCarRequest.getUserId());
 
         final UserEntity user = userRepository.findById(createCarRequest.getUserId())
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + createCarRequest.getUserId()));
@@ -73,7 +74,7 @@ public class CarServiceImpl implements CarService {
         final CarEntity carEntity = carRepository.findById(carId)
                 .orElseThrow(() -> new CarNotFoundException("Car not found with id: " + carId));
 
-        checkCurrentUser(carEntity.getUser().getId());
+        UserPermissionUtils.checkAccessPermission(userIdentity, carEntity.getUser().getId());
 
         return carEntityToCarMapper.mapFromEntity(carEntity);
 
@@ -95,7 +96,7 @@ public class CarServiceImpl implements CarService {
     @Transactional(readOnly = true)
     public CustomPage<Car> getAllCarsByUser(String userId, CustomPagingRequest pagingRequest) {
 
-        checkCurrentUser(userId);
+        UserPermissionUtils.checkAccessPermission(userIdentity, userId);
 
         final Page<CarEntity> page = carRepository.findByUserIdAndStatus(userId, CarStatus.ACTIVE, pagingRequest.toPageable());
 
@@ -129,7 +130,7 @@ public class CarServiceImpl implements CarService {
         }
 
         // Validate permission
-        checkCurrentUser(request.getUserId());
+        UserPermissionUtils.checkAccessPermission(userIdentity, request.getUserId());
 
         // Check license plate uniqueness if changed
         if (!carEntity.getLicensePlate().equals(request.getLicensePlate()) &&
@@ -158,7 +159,7 @@ public class CarServiceImpl implements CarService {
         CarEntity carEntity = carRepository.findById(carId)
                 .orElseThrow(() -> new CarNotFoundException("Car not found with id: " + carId));
 
-        checkCurrentUser(carEntity.getUser().getId());
+        UserPermissionUtils.checkAccessPermission(userIdentity, carEntity.getUser().getId());
 
         if (carEntity.getStatus() == CarStatus.DELETED) {
             return; // Already soft-deleted, optionally throw exception or just ignore
@@ -168,22 +169,5 @@ public class CarServiceImpl implements CarService {
         carRepository.save(carEntity);
     }
 
-
-
-    private void checkCurrentUser(String userId) {
-        // Get the current user's ID from UserIdentity.
-        final String currentUserId = userIdentity.getUserId();
-
-        final UserType currentUserType = userIdentity.getUserType();
-
-        if (currentUserType == UserType.ADMIN) {
-            return; // Admins can access any car
-        }
-
-        if (!userId.equals(currentUserId)) {
-            throw new AccessDeniedException("You are not authorized for another user.");
-        }
-
-    }
 
 }

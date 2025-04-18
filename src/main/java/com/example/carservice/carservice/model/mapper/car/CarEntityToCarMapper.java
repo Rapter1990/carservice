@@ -3,7 +3,7 @@ package com.example.carservice.carservice.model.mapper.car;
 import com.example.carservice.auth.model.mapper.UserEntityToUserMapper;
 import com.example.carservice.carservice.model.Car;
 import com.example.carservice.carservice.model.entity.CarEntity;
-import com.example.carservice.carservice.model.mapper.service.ServiceEntityToServiceMapper;
+import com.example.carservice.carservice.model.mapper.service.ServiceEntityToServiceDtoMapper;
 import com.example.carservice.common.model.mapper.BaseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
@@ -14,14 +14,14 @@ import java.util.stream.Collectors;
 
 @Mapper(uses = {
         UserEntityToUserMapper.class,
-        ServiceEntityToServiceMapper.class
+        ServiceEntityToServiceDtoMapper.class
 })
 public interface CarEntityToCarMapper extends BaseMapper<CarEntity, Car> {
 
     @Named("mapFromEntity")
     default Car mapFromEntity(CarEntity entity) {
         UserEntityToUserMapper userMapper = UserEntityToUserMapper.initialize();
-        ServiceEntityToServiceMapper serviceMapper = ServiceEntityToServiceMapper.initialize();
+        ServiceEntityToServiceDtoMapper serviceMapper = ServiceEntityToServiceDtoMapper.initialize();
 
         return Car.builder()
                 .id(entity.getId())

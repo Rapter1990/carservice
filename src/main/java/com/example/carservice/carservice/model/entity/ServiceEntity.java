@@ -29,7 +29,8 @@ public class ServiceEntity extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ServiceStatus status;
+    @Builder.Default
+    private ServiceStatus status = ServiceStatus.CREATED;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CAR_ID")

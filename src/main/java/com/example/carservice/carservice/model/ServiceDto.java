@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class Service extends BaseDomainModel {
+public class ServiceDto extends BaseDomainModel {
 
     private String id;
     private String title;

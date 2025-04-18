@@ -23,6 +23,6 @@ public class Car extends BaseDomainModel {
     private String userId;
     private CarStatus status;
     private User user;
-    private List<Service> serviceList;
+    private List<ServiceDto> serviceList;
 
 }

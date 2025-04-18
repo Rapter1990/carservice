@@ -2,9 +2,7 @@ package com.example.carservice.common.exception;
 
 import com.example.carservice.auth.exception.*;
 import com.example.carservice.base.AbstractBaseServiceTest;
-import com.example.carservice.carservice.exception.CarNotFoundException;
-import com.example.carservice.carservice.exception.CarStatusNotValidException;
-import com.example.carservice.carservice.exception.LicensePlateAlreadyExistsException;
+import com.example.carservice.carservice.exception.*;
 import com.example.carservice.common.model.CustomError;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -356,6 +354,74 @@ class GlobalExceptionHandlerTest extends AbstractBaseServiceTest {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         CustomError actualError = responseEntity.getBody();
         checkCustomError(expectedError, actualError);
+
+    }
+
+    @Test
+    void givenServiceNotFoundException_whenHandleServiceNotFoundException_thenRespondWithNotFound() {
+        // Given
+        String serviceId = UUID.randomUUID().toString();
+        ServiceNotFoundException ex = new ServiceNotFoundException(serviceId);
+
+        CustomError expectedError = CustomError.builder()
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .header(CustomError.Header.NOT_FOUND.getName())
+                .message("Service not found with the specified ID!\n Service ID: " + serviceId)
+                .isSuccess(false)
+                .build();
+
+        // When
+        ResponseEntity<CustomError> response = globalExceptionHandler.handleServiceNotFoundException(ex);
+
+        // Then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        checkCustomError(expectedError, response.getBody());
+    }
+
+    @Test
+    void givenServiceCarMismatchException_whenHandleServiceCarMismatchException_thenRespondWithBadRequest() {
+
+        // Given
+        String carId = UUID.randomUUID().toString();
+        String serviceId = UUID.randomUUID().toString();
+        ServiceCarMismatchException ex = new ServiceCarMismatchException(carId, serviceId);
+
+        CustomError expectedError = CustomError.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .header(CustomError.Header.VALIDATION_ERROR.getName())
+                .message("The service does not belong to the specified car.\n Car ID: " + carId + ", Service ID: " + serviceId)
+                .isSuccess(false)
+                .build();
+
+        // When
+        ResponseEntity<CustomError> response = globalExceptionHandler.handleServiceCarMismatchException(ex);
+
+        // Then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        checkCustomError(expectedError, response.getBody());
+
+    }
+
+    @Test
+    void givenServiceTitleAlreadyExistsException_whenHandleServiceTitleAlreadyExistsException_thenRespondWithConflict() {
+
+        // Given
+        String title = "Brake Inspection";
+        ServiceTitleAlreadyExistsException ex = new ServiceTitleAlreadyExistsException(title);
+
+        CustomError expectedError = CustomError.builder()
+                .httpStatus(HttpStatus.CONFLICT)
+                .header(CustomError.Header.VALIDATION_ERROR.getName())
+                .message("A service with the specified title already exists!\n Title: " + title)
+                .isSuccess(false)
+                .build();
+
+        // When
+        ResponseEntity<CustomError> response = globalExceptionHandler.handleServiceTitleAlreadyExistsException(ex);
+
+        // Then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+        checkCustomError(expectedError, response.getBody());
 
     }
 

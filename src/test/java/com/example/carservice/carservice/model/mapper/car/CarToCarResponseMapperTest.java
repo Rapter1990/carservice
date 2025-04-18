@@ -2,7 +2,7 @@ package com.example.carservice.carservice.model.mapper.car;
 
 import com.example.carservice.auth.model.User;
 import com.example.carservice.carservice.model.Car;
-import com.example.carservice.carservice.model.Service;
+import com.example.carservice.carservice.model.ServiceDto;
 import com.example.carservice.carservice.model.dto.response.CarResponse;
 import com.example.carservice.carservice.model.dto.response.ServiceResponse;
 import com.example.carservice.carservice.model.enums.CarStatus;
@@ -108,7 +108,7 @@ class CarToCarResponseMapperTest {
     @Test
     void testMapCarWithServices() {
         // Given
-        Service service = Service.builder()
+        ServiceDto service = ServiceDto.builder()
                 .id(UUID.randomUUID().toString())
                 .description("Tire Change")
                 .build();
@@ -145,7 +145,7 @@ class CarToCarResponseMapperTest {
                 .firstName("johndoe")
                 .build();
 
-        Service service = Service.builder()
+        ServiceDto service = ServiceDto.builder()
                 .id(UUID.randomUUID().toString())
                 .description("Oil Change")
                 .build();

@@ -70,7 +70,7 @@ public class CarController {
     )
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/{carId}")
-    public CustomResponse<CarResponse> getCarById(@PathVariable @Valid @UUID String carId) {
+    public CustomResponse<CarResponse> getCarById(@PathVariable @Valid @UUID final String carId) {
 
         Car car = carService.getCarById(carId);
         CarResponse response = carToCarResponseMapper.mapToResponse(car);
@@ -85,7 +85,7 @@ public class CarController {
     @PostMapping("/users/{userId}")
     public CustomResponse<CustomPagingResponse<CarResponse>> getAllCarsByUser(
             @PathVariable @Valid @UUID final String userId,
-            @RequestBody @Valid CustomPagingRequest pagingRequest) {
+            @RequestBody @Valid final CustomPagingRequest pagingRequest) {
 
         CustomPage<Car> customPage = carService.getAllCarsByUser(userId, pagingRequest);
         CustomPagingResponse<CarResponse> pagingResponse = carPageMapper.toPagingResponse(customPage);
@@ -99,7 +99,7 @@ public class CarController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/all")
     public CustomResponse<CustomPagingResponse<CarResponse>> getAllCars(
-            @RequestBody @Valid CustomPagingRequest pagingRequest) {
+            @RequestBody @Valid final CustomPagingRequest pagingRequest) {
 
         CustomPage<Car> customPage = carService.getAllCars(pagingRequest);
         CustomPagingResponse<CarResponse> pagingResponse = carPageMapper.toPagingResponse(customPage);
@@ -113,7 +113,7 @@ public class CarController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/allcarsByActiveStatus")
     public CustomResponse<CustomPagingResponse<CarResponse>> getAllCarsByActiveStatus(
-            @RequestBody @Valid CustomPagingRequest pagingRequest) {
+            @RequestBody @Valid final CustomPagingRequest pagingRequest) {
 
         CustomPage<Car> customPage = carService.getAllCarsByStatus(pagingRequest);
         CustomPagingResponse<CarResponse> pagingResponse = carPageMapper.toPagingResponse(customPage);
@@ -130,8 +130,8 @@ public class CarController {
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @PutMapping("/{carId}")
     public CustomResponse<CarResponse> updateCar(
-            @PathVariable @Valid @UUID String carId,
-            @RequestBody @Valid UpdateCarRequest updateCarRequest) {
+            @PathVariable @Valid @UUID final String carId,
+            @RequestBody @Valid final UpdateCarRequest updateCarRequest) {
 
         Car updatedCar = carService.updateCar(carId, updateCarRequest);
         CarResponse response = carToCarResponseMapper.mapToResponse(updatedCar);
@@ -150,7 +150,7 @@ public class CarController {
     )
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{carId}")
-    public CustomResponse<String> deleteCar(@PathVariable @Valid @UUID String carId) {
+    public CustomResponse<String> deleteCar(@PathVariable @Valid @UUID final String carId) {
         carService.deleteCar(carId);
         return CustomResponse.successOf("Car with ID " + carId + " is deleted");
     }
