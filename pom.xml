@@ -38,6 +38,18 @@
 		<jacoco-version>0.8.12</jacoco-version>
 		<maven-surefire-plugin-version>3.5.2</maven-surefire-plugin-version>
 		<maven-failsafe-plugin-version>3.5.2</maven-failsafe-plugin-version>
+		<sonar-maven-plugin.version>5.0.0.4389</sonar-maven-plugin.version>
+
+		<sonar.host.url>http://localhost:9000</sonar.host.url>  <!-- Changed to localhost if running locally -->
+		<sonar.login>sqp_ecd5d3dc8ec4296f3302dd0d333933f477a3c689</sonar.login> <!-- Authentication Token -->
+		<sonar.projectKey>carservice</sonar.projectKey>
+		<sonar.projectName>carservice</sonar.projectName>
+		<sonar.projectVersion>1.0</sonar.projectVersion>
+		<sonar.sources>src/main</sonar.sources>
+		<sonar.tests>src/test</sonar.tests>
+		<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
+		<sonar.java.binaries>target/classes</sonar.java.binaries>
+
 	</properties>
 
 	<dependencies>
@@ -214,6 +226,12 @@
 					</annotationProcessorPaths>
 					<compilerArgs>--enable-preview</compilerArgs>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>${sonar-maven-plugin.version}</version>
 			</plugin>
 
 			<plugin>

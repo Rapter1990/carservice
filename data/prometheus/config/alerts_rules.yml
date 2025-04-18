@@ -1,0 +1,13 @@
+groups:
+  - name: example-alerts
+    rules:
+      - alert: HighNonHeapUsage
+        expr: (sum(jvm_memory_used_bytes{application="Car Service", area="nonheap"}) * 100)
+          / sum(jvm_memory_max_bytes{application="Car Service", area="nonheap"}) > 2
+        for: 2m
+        labels:
+          severity: warning
+          service: carservice
+        annotations:
+          summary: "Car Service high non-heap usage"
+          description: "Non-heap usage has exceeded 2% for more than 2 minutes."
