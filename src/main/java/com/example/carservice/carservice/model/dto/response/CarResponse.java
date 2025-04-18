@@ -6,6 +6,10 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * Response DTO representing a car returned by the API.
+ * This object includes basic car information along with related user and service data.
+ */
 @Getter
 @Setter
 @Builder

@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Wrapper request object combining service filter criteria and pagination details.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

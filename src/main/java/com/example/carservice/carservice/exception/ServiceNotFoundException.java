@@ -4,6 +4,10 @@ import org.springframework.http.HttpStatus;
 
 import java.io.Serial;
 
+/**
+ * Exception thrown when a service with the specified ID cannot be found.
+ * Typically used to return a 404 NOT FOUND response.
+ */
 public class ServiceNotFoundException extends RuntimeException {
 
     @Serial
@@ -15,10 +19,18 @@ public class ServiceNotFoundException extends RuntimeException {
             Service not found with the specified ID!
             """;
 
+    /**
+     * Constructs a new exception with a default message.
+     */
     public ServiceNotFoundException() {
         super(DEFAULT_MESSAGE);
     }
 
+    /**
+     * Constructs a new exception including the missing service ID.
+     *
+     * @param serviceId the ID of the missing service
+     */
     public ServiceNotFoundException(final String serviceId) {
         super(DEFAULT_MESSAGE + " Service ID: " + serviceId);
     }

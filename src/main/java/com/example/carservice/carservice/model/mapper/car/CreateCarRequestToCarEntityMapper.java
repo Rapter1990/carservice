@@ -9,9 +9,19 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * Mapper for converting {@link CreateCarRequest} to {@link CarEntity}.
+ */
 @Mapper
 public interface CreateCarRequestToCarEntityMapper extends BaseMapper<CreateCarRequest, CarEntity> {
 
+    /**
+     * Maps a create car request and associated user to a new {@link CarEntity}.
+     *
+     * @param request    the car creation request DTO
+     * @param userEntity the user to whom the car is assigned
+     * @return the mapped car entity
+     */
     @Named("mapForSaving")
     default CarEntity mapForSaving(CreateCarRequest request, UserEntity userEntity) {
         return CarEntity.builder()
@@ -23,7 +33,13 @@ public interface CreateCarRequestToCarEntityMapper extends BaseMapper<CreateCarR
                 .build();
     }
 
+    /**
+     * Initializes the mapper using MapStruct's factory method.
+     *
+     * @return a singleton mapper instance
+     */
     static CreateCarRequestToCarEntityMapper initialize() {
         return Mappers.getMapper(CreateCarRequestToCarEntityMapper.class);
     }
+
 }

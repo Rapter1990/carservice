@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+/**
+ * Request object used to create a new service entry for a car.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

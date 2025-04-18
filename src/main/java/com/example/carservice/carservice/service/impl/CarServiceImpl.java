@@ -30,6 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service implementation for managing car operations such as creation, assignment, retrieval, update, and deletion.
+ */
 @Service
 @RequiredArgsConstructor
 public class CarServiceImpl implements CarService {
@@ -46,6 +49,12 @@ public class CarServiceImpl implements CarService {
 
     private final UpdateCarRequestToCarEntityMapper updateCarRequestToCarEntityMapper = UpdateCarRequestToCarEntityMapper.initialize();
 
+    /**
+     * Creates a new car and assigns it to the specified user.
+     *
+     * @param createCarRequest the request containing car and user data
+     * @return the newly created {@link Car}
+     */
     @Override
     @Transactional
     public Car assignCarToUser(CreateCarRequest createCarRequest) {
@@ -67,6 +76,12 @@ public class CarServiceImpl implements CarService {
 
     }
 
+    /**
+     * Retrieves car details by its unique identifier.
+     *
+     * @param carId the ID of the car
+     * @return the corresponding {@link Car} object
+     */
     @Override
     @Transactional(readOnly = true)
     public Car getCarById(String carId) {
@@ -80,6 +95,12 @@ public class CarServiceImpl implements CarService {
 
     }
 
+    /**
+     * Retrieves a paginated list of all cars in the system.
+     *
+     * @param pagingRequest the pagination and sorting parameters
+     * @return a paginated list of {@link Car} objects
+     */
     @Override
     @Transactional(readOnly = true)
     public CustomPage<Car> getAllCars(CustomPagingRequest pagingRequest) {
@@ -92,6 +113,13 @@ public class CarServiceImpl implements CarService {
 
     }
 
+    /**
+     * Retrieves a paginated list of cars assigned to a specific user.
+     *
+     * @param userId the ID of the user
+     * @param pagingRequest the pagination and sorting parameters
+     * @return a paginated list of the user's cars
+     */
     @Override
     @Transactional(readOnly = true)
     public CustomPage<Car> getAllCarsByUser(String userId, CustomPagingRequest pagingRequest) {
@@ -106,6 +134,12 @@ public class CarServiceImpl implements CarService {
 
     }
 
+    /**
+     * Retrieves a paginated list of all cars filtered by status.
+     *
+     * @param pagingRequest the pagination and sorting parameters
+     * @return a filtered paginated list of {@link Car} entries
+     */
     @Override
     @Transactional(readOnly = true)
     public CustomPage<Car> getAllCarsByStatus(CustomPagingRequest pagingRequest) {
@@ -117,6 +151,13 @@ public class CarServiceImpl implements CarService {
         return CustomPage.of(cars, page);
     }
 
+    /**
+     * Updates the details of a car.
+     *
+     * @param carId the ID of the car to update
+     * @param request the update request payload
+     * @return the updated {@link Car}
+     */
     @Override
     @Transactional
     public Car updateCar(String carId, UpdateCarRequest request) {
@@ -153,6 +194,11 @@ public class CarServiceImpl implements CarService {
 
     }
 
+    /**
+     * Deletes a car by its unique identifier.
+     *
+     * @param carId the ID of the car to delete
+     */
     @Override
     @Transactional
     public void deleteCar(String carId) {
@@ -168,6 +214,5 @@ public class CarServiceImpl implements CarService {
         carEntity.setStatus(CarStatus.DELETED);
         carRepository.save(carEntity);
     }
-
 
 }

@@ -6,6 +6,23 @@ import jakarta.validation.Payload;
 
 import java.lang.annotation.*;
 
+/**
+ * Custom validation annotation for verifying Turkish license plate formats.
+ * <p>
+ * Should be applied to fields representing vehicle license plates.
+ * </p>
+ *
+ * <p>Supported formats include:</p>
+ * <ul>
+ *   <li>99 X 9999</li>
+ *   <li>99 X 99999</li>
+ *   <li>99 XX 999</li>
+ *   <li>99 XX 9999</li>
+ *   <li>99 XXX 99</li>
+ * </ul>
+ *
+ * @see TurkishLicensePlateValidator
+ */
 @Documented
 @Constraint(validatedBy = TurkishLicensePlateValidator.class)
 @Target({ ElementType.FIELD })

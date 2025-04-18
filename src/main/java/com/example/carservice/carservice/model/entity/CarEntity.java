@@ -10,6 +10,14 @@ import lombok.experimental.SuperBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * JPA entity representing a car.
+ * Each car is associated with a user and may have multiple service records.
+ * This entity includes attributes like license plate, model, brand, and status.
+ *
+ * @see UserEntity
+ * @see ServiceEntity
+ */
 @Entity
 @Getter
 @Setter
@@ -44,4 +52,5 @@ public class CarEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ServiceEntity> services = new ArrayList<>();
+
 }

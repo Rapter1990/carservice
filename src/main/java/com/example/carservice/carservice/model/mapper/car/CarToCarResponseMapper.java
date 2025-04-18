@@ -12,12 +12,22 @@ import org.mapstruct.factory.Mappers;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+/**
+ * Mapper interface for converting {@link Car} domain model to {@link CarResponse} DTO.
+ * Uses mappers for nested user and service response mappings.
+ */
 @Mapper(uses = {
         UserToUserResponseMapper.class,
         ServiceDtoToServiceResponseMapper.class
 })
 public interface CarToCarResponseMapper extends BaseMapper<Car, CarResponse> {
 
+    /**
+     * Maps a {@link Car} to a {@link CarResponse} including nested user and service list.
+     *
+     * @param car the car domain model
+     * @return a response object suitable for API output
+     */
     @Named("mapToResponse")
     default CarResponse mapToResponse(Car car) {
         UserToUserResponseMapper userMapper = UserToUserResponseMapper.initialize();
@@ -39,8 +49,14 @@ public interface CarToCarResponseMapper extends BaseMapper<Car, CarResponse> {
                 .build();
     }
 
+    /**
+     * Initializes the mapper using MapStruct's factory method.
+     *
+     * @return a singleton mapper instance
+     */
     static CarToCarResponseMapper initialize() {
         return Mappers.getMapper(CarToCarResponseMapper.class);
     }
+
 }
 

@@ -6,6 +6,14 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * JPA entity representing a service performed on a car.
+ * <p>
+ * A service includes a title, description, status, and is linked to a specific car.
+ * </p>
+ *
+ * @see CarEntity
+ */
 @Entity
 @Getter
 @Setter

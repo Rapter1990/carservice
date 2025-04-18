@@ -10,16 +10,20 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Mapper interface for converting a {@link CustomPage} of {@link ServiceDto}
+ * into a {@link CustomPagingResponse} of {@link ServiceResponse}.
+ */
 @Mapper
 public interface CustomPageServiceDtoToCustomPagingServiceResponseMapper {
 
     ServiceDtoToServiceResponseMapper serviceMapper = Mappers.getMapper(ServiceDtoToServiceResponseMapper.class);
 
     /**
-     * Converts a CustomPage of ServiceDto into a CustomPagingResponse of ServiceResponse.
+     * Converts a {@link CustomPage} of {@link ServiceDto} into a paginated response.
      *
-     * @param servicePage the custom paginated service DTOs
-     * @return the mapped paginated service responses
+     * @param servicePage the source page of service DTOs
+     * @return a paginated {@link CustomPagingResponse} of service responses
      */
     default CustomPagingResponse<ServiceResponse> toPagingResponse(CustomPage<ServiceDto> servicePage) {
         if (servicePage == null) {
@@ -51,6 +55,11 @@ public interface CustomPageServiceDtoToCustomPagingServiceResponseMapper {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Initializes the mapper instance.
+     *
+     * @return a singleton instance of the mapper
+     */
     static CustomPageServiceDtoToCustomPagingServiceResponseMapper initialize() {
         return Mappers.getMapper(CustomPageServiceDtoToCustomPagingServiceResponseMapper.class);
     }

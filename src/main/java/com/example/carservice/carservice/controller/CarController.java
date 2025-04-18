@@ -21,6 +21,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * REST controller for managing cars.
+ * Provides endpoints for creating, retrieving, updating, and soft-deleting cars.
+ * Supports role-based access control (USER and ADMIN) and pagination.
+ */
 @RestController
 @RequestMapping("/api/v1/cars")
 @RequiredArgsConstructor
@@ -35,10 +40,10 @@ public class CarController {
     private final CustomPageCarToCustomPagingCarResponseMapper carPageMapper = CustomPageCarToCustomPagingCarResponseMapper.initialize();
 
     /**
-     * Endpoint to assign a new car to user.
+     * Assigns a new car to a user.
      *
-     * @param createCarRequest The {@link CreateCarRequest} object containing car details.
-     * @return A {@link CustomResponse} containing the created car information.
+     * @param createCarRequest the request payload containing car details
+     * @return a {@link CustomResponse} containing the created car's data
      */
     @Operation(
             summary = "Assign Car to User",
@@ -59,6 +64,12 @@ public class CarController {
 
     }
 
+    /**
+     * Retrieves a car by ID.
+     *
+     * @param carId the ID of the car to retrieve
+     * @return a {@link CustomResponse} containing the car's information
+     */
     @Operation(
             summary = "Get Car by ID",
             description = "Retrieves a car by ID if the user is the owner or an admin.",
@@ -78,6 +89,13 @@ public class CarController {
 
     }
 
+    /**
+     * Retrieves all cars assigned to a specific user.
+     *
+     * @param userId the ID of the user
+     * @param pagingRequest the pagination parameters
+     * @return paginated response of cars
+     */
     @Operation(summary = "Get all cars by user",
             description = "Retrieves a paginated list of cars assigned to a specific user (admin or self).")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved user's car list")
@@ -93,6 +111,12 @@ public class CarController {
 
     }
 
+    /**
+     * Retrieves all cars in the system (Admin only).
+     *
+     * @param pagingRequest pagination parameters
+     * @return paginated response of all cars
+     */
     @Operation(summary = "Get all cars (admin only)",
             description = "Retrieves a paginated list of all cars in the system.")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved car list")
@@ -107,6 +131,12 @@ public class CarController {
 
     }
 
+    /**
+     * Retrieves all active cars in the system (Admin only).
+     *
+     * @param pagingRequest pagination parameters
+     * @return paginated response of active cars
+     */
     @Operation(summary = "Get all cars by its status active(admin only)",
             description = "Retrieves a paginated list of all cars in the system.")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved car list")
@@ -121,6 +151,13 @@ public class CarController {
 
     }
 
+    /**
+     * Updates car information by ID.
+     *
+     * @param carId the ID of the car to update
+     * @param updateCarRequest the updated car details
+     * @return the updated car data
+     */
     @Operation(summary = "Update Car",
             description = "Updates a car's details, including its status and ownership.")
     @ApiResponse(responseCode = "200", description = "Car updated successfully")
@@ -139,6 +176,12 @@ public class CarController {
 
     }
 
+    /**
+     * Marks a car as deleted (soft delete).
+     *
+     * @param carId the ID of the car to delete
+     * @return success message
+     */
     @Operation(
             summary = "Soft Delete Car",
             description = "Marks a car as DELETED by ID.",

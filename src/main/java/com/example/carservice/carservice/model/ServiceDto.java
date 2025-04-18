@@ -7,6 +7,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Data Transfer Object representing a car service entry (e.g., maintenance, repair).
+ * Contains basic metadata such as ID, title, description, and service status.
+ * Inherits auditing fields from {@link BaseDomainModel}.
+ */
 @Getter
 @Setter
 @SuperBuilder

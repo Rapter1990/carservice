@@ -7,9 +7,19 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * Mapper interface for converting {@link CreateServiceRequest} to {@link ServiceEntity}.
+ * Used when creating new service entries in the system.
+ */
 @Mapper
 public interface CreateServiceRequestToServiceEntityMapper extends BaseMapper<CreateServiceRequest, ServiceEntity> {
 
+    /**
+     * Maps a {@link CreateServiceRequest} to a {@link ServiceEntity}.
+     *
+     * @param request the service creation request DTO
+     * @return the service entity ready for persistence
+     */
     @Named("map")
     default ServiceEntity map(CreateServiceRequest request) {
         if (request == null) {
@@ -23,6 +33,11 @@ public interface CreateServiceRequestToServiceEntityMapper extends BaseMapper<Cr
                 .build();
     }
 
+    /**
+     * Initializes the mapper instance.
+     *
+     * @return a singleton instance of the mapper
+     */
     static CreateServiceRequestToServiceEntityMapper initialize() {
         return Mappers.getMapper(CreateServiceRequestToServiceEntityMapper.class);
     }

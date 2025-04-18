@@ -7,11 +7,18 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * Mapper for applying updates from {@link UpdateCarRequest} to an existing {@link CarEntity}.
+ */
 @Mapper
 public interface UpdateCarRequestToCarEntityMapper {
 
     /**
-     * Applies updates from UpdateCarRequest to an existing CarEntity.
+     * Updates the target {@link CarEntity} fields using values from the {@link UpdateCarRequest}.
+     *
+     * @param request the update payload
+     * @param entity  the existing car entity to be updated
+     * @param user    the user to assign to the car
      */
     @Named("updateEntity")
     default void updateEntity(UpdateCarRequest request, CarEntity entity, UserEntity user) {
@@ -22,6 +29,11 @@ public interface UpdateCarRequestToCarEntityMapper {
         entity.setUser(user);
     }
 
+    /**
+     * Initializes the mapper using MapStruct's factory method.
+     *
+     * @return a singleton mapper instance
+     */
     static UpdateCarRequestToCarEntityMapper initialize() {
         return Mappers.getMapper(UpdateCarRequestToCarEntityMapper.class);
     }

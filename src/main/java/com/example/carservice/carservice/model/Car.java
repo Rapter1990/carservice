@@ -10,6 +10,12 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
+/**
+ * Domain model representing a car and its associated user and services.
+ * Includes car-specific attributes such as license plate, model, and brand.
+ * Also contains a list of related services and user information.
+ * Inherits audit metadata from {@link BaseDomainModel}.
+ */
 @Getter
 @Setter
 @SuperBuilder

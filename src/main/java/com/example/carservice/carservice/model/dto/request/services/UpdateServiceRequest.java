@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+/**
+ * Request object used to update the details of an existing service.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

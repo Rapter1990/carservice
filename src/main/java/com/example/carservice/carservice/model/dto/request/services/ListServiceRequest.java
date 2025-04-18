@@ -10,6 +10,10 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Optional;
 
+/**
+ * Filter request object for listing services based on optional criteria.
+ * Implements {@link Filterable} to convert filter fields into JPA {@link Specification}s.
+ */
 @Getter
 @Setter
 public class ListServiceRequest implements Filterable<ServiceEntity> {
@@ -31,10 +35,9 @@ public class ListServiceRequest implements Filterable<ServiceEntity> {
     }
 
     /**
-     * Converts the filter criteria into a Spring Data JPA Specification for querying services.
+     * Converts this filter object into a {@link Specification} for querying the database.
      *
-     * @return A {@link Specification} representing the filter criteria for querying services.
-     * @see ServiceSpecification
+     * @return the generated {@link Specification} for filtering {@link ServiceEntity} results
      */
     @Override
     public Specification<ServiceEntity> toSpecification() {
@@ -50,5 +53,6 @@ public class ListServiceRequest implements Filterable<ServiceEntity> {
 
         return specification[0];
     }
+
 }
 
