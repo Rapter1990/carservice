@@ -26,6 +26,15 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Aspect for logging REST controller activity including successful responses and thrown exceptions.
+ * Captures metadata such as request endpoint, method, user, status, and error messages,
+ * and logs it into the database using {@link LogService}.
+ * This aspect applies to all classes annotated with {@code @RestController}.
+ *
+ * @see LogEntity
+ * @see LogService
+ */
 @Aspect
 @Slf4j
 @Component
@@ -34,11 +43,21 @@ public class LoggerAspectJ {
 
     private final LogService logService;
 
+    /**
+     * Pointcut expression targeting all classes annotated with {@code @RestController}.
+     */
     @Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
     public void restControllerPointcut() {
 
     }
 
+    /**
+     * Advice that logs exceptions thrown from any method within a {@code @RestController}.
+     * Builds a {@link LogEntity} and stores it using {@link LogService}.
+     *
+     * @param joinPoint the join point representing the method that threw the exception
+     * @param ex        the exception that was thrown
+     */
     @AfterThrowing(pointcut = "restControllerPointcut()", throwing = "ex")
     public void logAfterThrowing(JoinPoint joinPoint, Exception ex) {
 
@@ -78,6 +97,14 @@ public class LoggerAspectJ {
 
     }
 
+    /**
+     * Advice that logs successful executions of controller methods.
+     * Builds and stores a {@link LogEntity} after the method returns.
+     *
+     * @param joinPoint the join point representing the executed controller method
+     * @param result    the result returned from the method
+     * @throws IOException if JSON serialization fails
+     */
     @AfterReturning(value = "restControllerPointcut()", returning = "result")
     public void logAfterReturning(JoinPoint joinPoint, Object result) throws IOException {
 
@@ -124,7 +151,12 @@ public class LoggerAspectJ {
         }
     }
 
-
+    /**
+     * Resolves the appropriate {@link HttpStatus} for a given exception type.
+     *
+     * @param ex the thrown exception
+     * @return the name of the corresponding HTTP status
+     */
     private String getHttpStatusFromException(Exception ex) {
         return switch (ex.getClass().getSimpleName()) {
             case "PasswordNotValidException" -> PasswordNotValidException.STATUS.name();

@@ -8,6 +8,11 @@ import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entity representing a log record in the system.
+ * Logs are typically captured by AOP for auditing requests, responses, exceptions,
+ * and user operations across the application.
+ */
 @Entity
 @Getter
 @Setter
