@@ -7,6 +7,6 @@ import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public abstract class AbstractBaseServiceTest {
+public abstract class AbstractBaseServiceTest extends AbstractLoggerAspectTestLogConfig {
 
 }
