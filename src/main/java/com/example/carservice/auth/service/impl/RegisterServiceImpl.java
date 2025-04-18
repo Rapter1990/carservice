@@ -12,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service implementation for handling user registration operations.
+ */
 @Service
 @RequiredArgsConstructor
 public class RegisterServiceImpl implements RegisterService {
@@ -25,6 +28,12 @@ public class RegisterServiceImpl implements RegisterService {
 
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Registers a new user based on the provided registration request.
+     *
+     * @param registerRequest the request containing user registration details
+     * @return the newly registered {@link User}
+     */
     @Override
     public User registerUser(RegisterRequest registerRequest) {
 

@@ -8,6 +8,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Domain model representing a user in the system.
+ * <p>
+ * Inherits common auditing fields from {@link BaseDomainModel}.
+ * </p>
+ */
 @Getter
 @Setter
 @SuperBuilder

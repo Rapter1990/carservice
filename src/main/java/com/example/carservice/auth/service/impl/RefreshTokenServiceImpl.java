@@ -13,6 +13,9 @@ import com.example.carservice.auth.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service implementation for refreshing JWT access tokens using a valid refresh token.
+ */
 @Service
 @RequiredArgsConstructor
 public class RefreshTokenServiceImpl implements RefreshTokenService {
@@ -20,7 +23,12 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private final UserRepository userRepository;
     private final TokenService tokenService;
 
-
+    /**
+     * Generates a new access token using the provided refresh token.
+     *
+     * @param tokenRefreshRequest the request containing the refresh token
+     * @return a new {@link Token} containing the refreshed access and refresh tokens
+     */
     @Override
     public Token refreshToken(TokenRefreshRequest tokenRefreshRequest) {
 

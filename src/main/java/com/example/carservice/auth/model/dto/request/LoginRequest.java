@@ -5,6 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Request DTO used for user login.
+ * Contains user credentials including email and password.
+ */
 @Getter
 @Setter
 @Builder

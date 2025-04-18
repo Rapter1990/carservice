@@ -8,6 +8,10 @@ import lombok.*;
 
 import java.time.LocalDate;
 
+/**
+ * Request DTO used for user registration.
+ * Contains user credentials and profile details required to create a new account.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

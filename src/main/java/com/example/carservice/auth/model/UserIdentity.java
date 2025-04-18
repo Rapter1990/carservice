@@ -9,6 +9,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
+/**
+ * A request-scoped component that provides access to identity information of the authenticated user.
+ * This class extracts user-specific details such as user ID and user type from the JWT token stored
+ * in the Spring Security context. It is useful for associating data access or auditing with the current user.
+ *
+ * Scoped to each HTTP request via {@link BeanScope#SCOPE_REQUEST}.
+ *
+ * @see org.springframework.security.oauth2.jwt.Jwt
+ * @see org.springframework.security.core.context.SecurityContextHolder
+ * @see TokenClaims
+ * @see UserType
+ */
 @Component
 @Scope(value = BeanScope.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserIdentity {

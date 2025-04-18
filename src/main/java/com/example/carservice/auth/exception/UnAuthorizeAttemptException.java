@@ -4,6 +4,9 @@ import org.springframework.http.HttpStatus;
 
 import java.io.Serial;
 
+/**
+ * Exception thrown when a user attempts an operation without the required authorization.
+ */
 public class UnAuthorizeAttemptException extends RuntimeException {
 
     @Serial
@@ -15,6 +18,9 @@ public class UnAuthorizeAttemptException extends RuntimeException {
             You do not have permission to create a to-do item.
             """;
 
+    /**
+     * Constructs a {@code UnAuthorizeAttemptException} with a predefined message.
+     */
     public UnAuthorizeAttemptException() {
         super(DEFAULT_MESSAGE);
     }

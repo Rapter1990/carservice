@@ -3,6 +3,10 @@ package com.example.carservice.auth.model.enums;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Enum representing various configuration parameters used in authentication and JWT operations.
+ * Each parameter holds a {@code defaultValue} string, which may represent a key, duration, or cryptographic value.
+ */
 @Getter
 @RequiredArgsConstructor
 public enum ConfigurationParameter {

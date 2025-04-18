@@ -3,6 +3,9 @@ package com.example.carservice.auth.model.enums;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Enum representing standard JWT claims used throughout the authentication and authorization process.
+ */
 @Getter
 @RequiredArgsConstructor
 public enum TokenClaims {

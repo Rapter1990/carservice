@@ -4,6 +4,10 @@ import com.example.carservice.auth.model.enums.UserStatus;
 import com.example.carservice.auth.model.enums.UserType;
 import lombok.*;
 
+/**
+ * Response DTO representing user profile information.
+ * Typically returned after registration, login, or when fetching user details.
+ */
 @Getter
 @Setter
 @Builder

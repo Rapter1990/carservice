@@ -24,17 +24,60 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Security configuration class for setting up HTTP security, token authentication, and CORS policies.
+ * <p>
+ * This class configures:
+ * <ul>
+ *     <li>Custom JWT-based authentication using {@link CustomBearerTokenAuthenticationFilter}</li>
+ *     <li>Permitted and secured endpoints</li>
+ *     <li>CORS configuration</li>
+ *     <li>Session policy (stateless)</li>
+ *     <li>Password encoding strategy</li>
+ * </ul>
+ * </p>
+ *
+ * @see CustomBearerTokenAuthenticationFilter
+ * @see CustomAuthenticationEntryPoint
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    /**
+     * Configures session authentication strategy.
+     * <p>
+     * This is required when working with session management in Spring Security.
+     * In this case, it's used to track authenticated sessions even though the policy is stateless.
+     * </p>
+     *
+     * @return a {@link SessionAuthenticationStrategy} for session registration
+     */
     @Bean
     protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
         return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
     }
 
+    /**
+     * Configures the main Spring Security filter chain.
+     * <p>
+     * Includes configuration for:
+     * <ul>
+     *     <li>Exception handling with a custom authentication entry point</li>
+     *     <li>Permitting public access to authentication, Swagger, and actuator endpoints</li>
+     *     <li>Custom JWT authentication filter</li>
+     *     <li>CORS and CSRF settings</li>
+     * </ul>
+     * </p>
+     *
+     * @param httpSecurity the {@link HttpSecurity} object
+     * @param customBearerTokenAuthenticationFilter the custom JWT filter
+     * @param customAuthenticationEntryPoint the custom authentication entry point for unauthorized access
+     * @return the configured {@link SecurityFilterChain}
+     * @throws Exception in case of configuration errors
+     */
     @Bean
     public SecurityFilterChain filterChain(
             final HttpSecurity httpSecurity,
@@ -63,6 +106,14 @@ public class SecurityConfig {
         return httpSecurity.build();
     }
 
+    /**
+     * Defines the CORS configuration source.
+     * <p>
+     * Allows requests from all origins, methods, and headers.
+     * </p>
+     *
+     * @return a {@link CorsConfigurationSource} allowing global cross-origin access
+     */
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("*"));
@@ -73,6 +124,11 @@ public class SecurityConfig {
         return source;
     }
 
+    /**
+     * Provides the password encoder bean used for hashing user passwords.
+     *
+     * @return a {@link PasswordEncoder} instance using BCrypt
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

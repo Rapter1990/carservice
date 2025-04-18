@@ -11,6 +11,11 @@ import lombok.experimental.SuperBuilder;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Entity representing a user in the system.
+ * Inherits auditing fields from {@link BaseEntity} and includes identity, authentication,
+ * and user profile information. Also supports extracting JWT claims from user details.
+ */
 @Entity
 @Getter
 @Setter
@@ -51,7 +56,14 @@ public class UserEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus = UserStatus.ACTIVE;
 
-
+    /**
+     * Builds a map of JWT claims from the user's attributes.
+     * <p>
+     * These claims are used during token generation.
+     * </p>
+     *
+     * @return a map of JWT claim keys and their corresponding values
+     */
     public Map<String, Object> getClaims() {
         final Map<String, Object> claims = new HashMap<>();
         claims.put(TokenClaims.USER_ID.getValue(), this.id);

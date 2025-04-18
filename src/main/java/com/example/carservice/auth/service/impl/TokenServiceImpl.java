@@ -21,6 +21,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/**
+ * Service implementation for handling JWT token operations such as generation, validation, and parsing.
+ */
 @Service
 @RequiredArgsConstructor
 public class TokenServiceImpl implements TokenService {
@@ -28,6 +31,12 @@ public class TokenServiceImpl implements TokenService {
     private final TokenConfigurationParameter tokenConfigurationParameter;
     private final InvalidTokenService invalidTokenService;
 
+    /**
+     * Generates a new {@link Token} using the provided claims.
+     *
+     * @param claims the JWT claims to include in the token
+     * @return a new {@link Token} containing access and refresh tokens
+     */
     @Override
     public Token generateToken(Map<String, Object> claims) {
 
@@ -76,6 +85,13 @@ public class TokenServiceImpl implements TokenService {
                 .build();
     }
 
+    /**
+     * Generates a new {@link Token} using the provided claims and an existing refresh token.
+     *
+     * @param claims       the JWT claims to include in the token
+     * @param refreshToken the existing refresh token
+     * @return a new {@link Token} containing updated access and refresh tokens
+     */
     @Override
     public Token generateToken(Map<String, Object> claims, String refreshToken) {
 
@@ -111,6 +127,12 @@ public class TokenServiceImpl implements TokenService {
                 .build();
     }
 
+    /**
+     * Extracts Spring Security authentication details from the provided JWT.
+     *
+     * @param token the JWT token
+     * @return an {@link UsernamePasswordAuthenticationToken} containing user credentials and authorities
+     */
     @Override
     public UsernamePasswordAuthenticationToken getAuthentication(String token) {
 
@@ -143,6 +165,11 @@ public class TokenServiceImpl implements TokenService {
                 .authenticated(jwt, null, authorities);
     }
 
+    /**
+     * Verifies and validates the integrity and expiration of the provided JWT.
+     *
+     * @param jwt the JWT to validate
+     */
     @Override
     public void verifyAndValidate(String jwt) {
         Jwts.parser()
@@ -151,11 +178,22 @@ public class TokenServiceImpl implements TokenService {
                 .parseSignedClaims(jwt);
     }
 
+    /**
+     * Verifies and validates the integrity and expiration of a set of JWTs.
+     *
+     * @param jwts the set of JWTs to validate
+     */
     @Override
     public void verifyAndValidate(Set<String> jwts) {
         jwts.forEach(this::verifyAndValidate);
     }
 
+    /**
+     * Parses the JWT and returns its full claims set.
+     *
+     * @param jwt the JWT string
+     * @return a {@link Jws} containing the JWT claims
+     */
     @Override
     public Jws<Claims> getClaims(String jwt) {
         return Jwts.parser()
@@ -164,6 +202,12 @@ public class TokenServiceImpl implements TokenService {
                 .parseSignedClaims(jwt);
     }
 
+    /**
+     * Extracts the payload (claims) from the JWT.
+     *
+     * @param jwt the JWT string
+     * @return the JWT {@link Claims} payload
+     */
     @Override
     public Claims getPayload(String jwt) {
         return Jwts.parser()
@@ -173,6 +217,12 @@ public class TokenServiceImpl implements TokenService {
                 .getPayload();
     }
 
+    /**
+     * Retrieves the unique token ID (jti) from the JWT.
+     *
+     * @param jwt the JWT string
+     * @return the token ID as a {@link String}
+     */
     @Override
     public String getId(String jwt) {
         return Jwts.parser()

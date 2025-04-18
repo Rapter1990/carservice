@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
+/**
+ * Service implementation for handling user logout operations.
+ */
 @Service
 @RequiredArgsConstructor
 public class LogoutServiceImpl implements LogoutService {
@@ -16,6 +19,11 @@ public class LogoutServiceImpl implements LogoutService {
     private final TokenService tokenService;
     private final InvalidTokenService invalidTokenService;
 
+    /**
+     * Invalidates the user's tokens during logout.
+     *
+     * @param tokenInvalidateRequest the request containing token IDs to invalidate
+     */
     @Override
     public void logout(TokenInvalidateRequest tokenInvalidateRequest) {
 

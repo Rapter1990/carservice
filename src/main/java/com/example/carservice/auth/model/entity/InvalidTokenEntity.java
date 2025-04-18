@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Entity representing a JWT token that has been invalidated (e.g., due to logout or blacklisting).
+ * Stores the unique token ID (jti) to prevent reuse of previously issued tokens.
+ */
 @Entity
 @Getter
 @Setter

@@ -23,6 +23,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * REST controller for handling user authentication and authorization operations.
+ * Provides endpoints for registering new users, logging in, refreshing access tokens,
+ * and logging out by invalidating tokens.
+ *
+ * <p>All endpoints are prefixed with {@code /api/v1/authentication/user}</p>
+ *
+ * @see RegisterService
+ * @see LoginService
+ * @see RefreshTokenService
+ * @see LogoutService
+ * @see TokenToTokenResponseMapper
+ */
 @RestController
 @RequestMapping("/api/v1/authentication/user")
 @RequiredArgsConstructor

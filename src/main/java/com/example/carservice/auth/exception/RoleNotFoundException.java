@@ -4,6 +4,9 @@ import org.springframework.http.HttpStatus;
 
 import java.io.Serial;
 
+/**
+ * Exception thrown when a requested role cannot be found in the system.
+ */
 public class RoleNotFoundException extends RuntimeException {
 
     @Serial
@@ -15,10 +18,18 @@ public class RoleNotFoundException extends RuntimeException {
             Role not found!
             """;
 
+    /**
+     * Constructs a {@code RoleNotFoundException} with a default message.
+     */
     public RoleNotFoundException() {
         super(DEFAULT_MESSAGE);
     }
 
+    /**
+     * Constructs a {@code RoleNotFoundException} with additional details.
+     *
+     * @param message additional description for debugging
+     */
     public RoleNotFoundException(final String message) {
         super(DEFAULT_MESSAGE + " " + message);
     }
