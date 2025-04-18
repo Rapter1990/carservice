@@ -17,6 +17,10 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+/**
+ * Abstract base class for JPA entities, providing common auditing fields.
+ * This class should be extended by all entities that require auditing.
+ */
 @Getter
 @Setter
 @SuperBuilder
@@ -37,6 +41,11 @@ public class BaseEntity {
     @Column(name = "UPDATED_BY")
     private String updatedBy;
 
+    /**
+     * JPA callback that sets {@code createdAt} and {@code createdBy} before persisting the entity.
+     * Retrieves the current user's email from the {@link SecurityContextHolder}. If the user is anonymous,
+     * sets the createdBy field to "anonymousUser".
+     */
     @PrePersist
     public void prePersist() {
         this.createdBy = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
@@ -48,6 +57,11 @@ public class BaseEntity {
         this.createdAt = LocalDateTime.now();
     }
 
+    /**
+     * JPA callback that sets {@code updatedAt} and {@code updatedBy} before updating the entity.
+     * Retrieves the current user's email from the {@link SecurityContextHolder}. If the user is anonymous,
+     * sets the updatedBy field to "anonymousUser".
+     */
     @PreUpdate
     public void preUpdate() {
         this.updatedBy = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())

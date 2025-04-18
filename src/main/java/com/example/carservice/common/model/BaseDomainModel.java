@@ -9,6 +9,10 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
+/**
+ * Abstract base class for domain models that require auditing fields.
+ * Contains metadata for creation and update operations, including user and timestamp.
+ */
 @Getter
 @Setter
 @SuperBuilder

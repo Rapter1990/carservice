@@ -7,6 +7,11 @@ import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
+/**
+ * Configuration class named {@link OpenApiConfig} for OpenAPI documentation in the Car Service application.
+ * This class defines the metadata for the OpenAPI documentation, including the title, version,
+ * description, contact information for the API and , and JWT-based security scheme.
+ */
 @OpenAPIDefinition(
         info = @Info(
                 contact = @Contact(

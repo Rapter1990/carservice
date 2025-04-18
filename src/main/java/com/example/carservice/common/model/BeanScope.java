@@ -2,6 +2,9 @@ package com.example.carservice.common.model;
 
 import lombok.experimental.UtilityClass;
 
+/**
+ * Utility class for defining Spring bean scope constants.
+ */
 @UtilityClass
 public class BeanScope {
 

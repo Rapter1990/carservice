@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Represents a standardized error response for API operations.
+ */
 @Getter
 @Builder
 public class CustomError {
@@ -29,6 +32,9 @@ public class CustomError {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<CustomSubError> subErrors;
 
+    /**
+     * Represents a sub-error, usually used for validation problems.
+     */
     @Getter
     @Builder
     public static class CustomSubError {
@@ -45,6 +51,9 @@ public class CustomError {
 
     }
 
+    /**
+     * Enumeration of predefined error categories for consistent API responses.
+     */
     @Getter
     @RequiredArgsConstructor
     public enum Header {
