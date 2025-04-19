@@ -6,8 +6,6 @@
 
 ### 📖 Information
 
-### 📖 Information
-
 <ul style="list-style-type:disc">
   <li>
     <b>Authentication:</b>
