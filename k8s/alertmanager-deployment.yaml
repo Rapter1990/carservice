@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertmanager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alertmanager
+  template:
+    metadata:
+      labels:
+        app: alertmanager
+    spec:
+      initContainers:
+        - name: config-init
+          image: alpine:latest
+          envFrom:
+            - secretRef:
+                name: alertmanager-env
+          command:
+            - sh
+            - -c
+            - |
+              apk add --no-cache gettext &&
+              envsubst < /template/alertmanager.yml > /config/alertmanager.yml
+          volumeMounts:
+            - name: alertmanager-template
+              mountPath: /template
+            - name: alertmanager-config
+              mountPath: /config
+      containers:
+        - name: alertmanager
+          image: prom/alertmanager:latest
+          ports:
+            - containerPort: 9093
+          command:
+            - alertmanager
+            - --config.file=/etc/alertmanager/alertmanager.yml
+          volumeMounts:
+            - name: alertmanager-config
+              mountPath: /etc/alertmanager/alertmanager.yml
+              subPath: alertmanager.yml
+      volumes:
+        - name: alertmanager-template
+          configMap:
+            name: alertmanager-config
+            items:
+              - key: alertmanager.yml
+                path: alertmanager.yml
+        - name: alertmanager-config
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmanager-service
+spec:
+  selector:
+    app: alertmanager
+  ports:
+    - name: http
+      port: 9093
+      targetPort: 9093
+      protocol: TCP
+  type: ClusterIP

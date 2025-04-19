@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carservice
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: carservice
+  template:
+    metadata:
+      labels:
+        app: carservice
+    spec:
+      containers:
+        - name: carservice
+          image: noyandocker/carservice:latest
+          ports:
+            - containerPort: 4110  # Use the SERVER_PORT from the config map, if applicable.
+          envFrom:
+            - configMapRef:
+                name: carservice-config
+          env:
+            - name: DATABASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: DATABASE_USERNAME
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: DATABASE_PASSWORD
+            - name: spring.datasource.url
+              value: "jdbc:mysql://mysql.default.svc.cluster.local:3307/carservicedatabase"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: carservice-service
+  namespace: default
+spec:
+  selector:
+    app: carservice
+  ports:
+    - protocol: TCP
+      port: 4110
+      targetPort: 4110
+  type: NodePort

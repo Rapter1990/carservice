@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+data:
+  alertmanager.yml: |
+    global:
+      resolve_timeout: ${ALERT_RESOLVE_TIMEOUT}
+      smtp_smarthost: ${SMTP_SMARTHOST}
+      smtp_from: ${SMTP_FROM}
+      smtp_auth_username: ${SMTP_AUTH_USERNAME}
+      smtp_auth_password: ${SMTP_AUTH_PASSWORD}
+      smtp_require_tls: ${SMTP_REQUIRE_TLS}
+
+    route:
+      group_by: ['alertname']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 5m
+      receiver: 'default'
+
+    receivers:
+      - name: 'default'
+        webhook_configs:
+          - url: 'http://grafana-service.default.svc.cluster.local:3000'
+        email_configs:
+          - to: ${ALERT_EMAIL_TO}
+            send_resolved: true

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: carservice-config
+  namespace: default
+data:
+  CAR_SERVICE_DB_IP: "mysql.default.svc.cluster.local"
+  CAR_SERVICE_DB_PORT: "3307"
+  SERVER_PORT: "4110"
