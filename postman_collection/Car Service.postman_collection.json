@@ -1,0 +1,1728 @@
+{
+	"info": {
+		"_postman_id": "5da84c7c-9276-4c5c-85bd-fb6ca9f0507a",
+		"name": "Car Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33002673"
+	},
+	"item": [
+		{
+			"name": "auth | admin",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"exampleAdminFirstName\",\r\n    \"lastName\": \"exampleAdminSurName\",\r\n    \"email\": \"exampleAdmin@gmail.com\",\r\n    \"password\": \"exampleAdmin\",\r\n    \"phoneNumber\": \"01234567890\",\r\n    \"userType\" : \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4110/api/v1/authentication/user/register",
+							"host": [
+								"localhost"
+							],
+							"port": "4110",
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the JSON response\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Check if the response contains accessToken and refreshToken\r",
+									"if (response.isSuccess && response.response.accessToken && response.response.refreshToken) {\r",
+									"    // Set the tokens as environment variables for admin\r",
+									"    pm.environment.set(\"ADMIN_ACCESS_TOKEN\", response.response.accessToken);\r",
+									"    pm.environment.set(\"ADMIN_REFRESH_TOKEN\", response.response.refreshToken);\r",
+									"    \r",
+									"    console.log(\"Manager Access Token and Refresh Token have been set successfully.\");\r",
+									"} else {\r",
+									"    console.error(\"Failed to extract admin tokens from the response.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"exampleAdmin@gmail.com\",\r\n    \"password\": \"exampleAdmin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4110/api/v1/authentication/user/login",
+							"host": [
+								"localhost"
+							],
+							"port": "4110",
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the JSON response\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Check if the response contains accessToken and refreshToken\r",
+									"if (response.isSuccess && response.response.accessToken && response.response.refreshToken) {\r",
+									"    // Set the new tokens as environment variables\r",
+									"    pm.environment.set(\"ADMIN_ACCESS_TOKEN\", response.response.accessToken);\r",
+									"    pm.environment.set(\"ADMIN_REFRESH_TOKEN\", response.response.refreshToken);\r",
+									"    \r",
+									"    console.log(\"Admin Access Token and Refresh Token have been updated successfully.\");\r",
+									"} else {\r",
+									"    console.error(\"Failed to update admin tokens. Check the response structure or success status.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refreshToken\": \"eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJhYTQ3NjZkMC1mYTcxLTRjYWUtYTdjNy03N2IxNTFhZmQ3ZjYiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3NDQ3MDU2ODUsImV4cCI6MTc0NDc5MjA4NSwidXNlcklkIjoiOTVkNDM4YTMtODExZC00ZmM5LTgwMGEtYWMyZmM4MmFiYTI4In0.qyVgpodPsM-71pC1d8i5ExT7vJuVi9XH99mX2L5fejdYvLdlT0hSdQ1Dbe9T_eVEL-qB-9QuK5JqAClzfGUY_5oEggP5C24XTqk_Rxmk9dmmbdsGKebHDmmklDcLL3MHdhGQrVi6G4ow03FUO-7IVHsLaG-v5ZlCis-hUptAsoIy9tkEv9R4LdZX6SZbCImuHx2PXHziDZGLVjhfcHgmoTmFYLUwXGjMJBqfbROc_d1CcimN8EDlkh-4xxFj-fq0BrDA1MtNvg4cPvlNUKAIkJMKcGyC9kZFVxuLKFzTMJGvz3UEJeTCNZIvbesM7No_VQtKZX9QEiSYLEK5I5mCkQ\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4110/api/v1/authentication/user/refresh-token",
+							"host": [
+								"localhost"
+							],
+							"port": "4110",
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"user",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the response\r",
+									"if (pm.response.code === 200) {\r",
+									"    const response = pm.response.json();\r",
+									"    \r",
+									"    // Check if the response is successful\r",
+									"    if (response.isSuccess) {\r",
+									"        // Set MANAGER_ACCESS_TOKEN and MANAGER_REFRESH_TOKEN to empty strings in the environment\r",
+									"        pm.environment.set(\"ADMIN_ACCESS_TOKEN\", \"\");\r",
+									"        pm.environment.set(\"ADMIN_REFRESH_TOKEN\", \"\");\r",
+									"        console.log(\"Tokens cleared successfully.\");\r",
+									"    } else {\r",
+									"        console.log(\"Logout was not successful, tokens not cleared.\");\r",
+									"    }\r",
+									"} else {\r",
+									"    console.log(\"Request failed, tokens not cleared.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accessToken\": \"eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJiNzA5NGM1MS03NjgwLTRhNGUtODBjMy0wMzQ0M2QyNjFkOGIiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3NDQ3MDU3MDUsImV4cCI6MTc0NDcwNzUwNSwidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVBZG1pblN1ck5hbWUiLCJ1c2VyUGhvbmVOdW1iZXIiOiIwMTIzNDU2Nzg5MCIsInVzZXJFbWFpbCI6ImV4YW1wbGVBZG1pbkBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVBZG1pbkZpcnN0TmFtZSIsInVzZXJJZCI6Ijk1ZDQzOGEzLTgxMWQtNGZjOS04MDBhLWFjMmZjODJhYmEyOCJ9.lCeeoxXOgFPoOKHP6vKE2IeqqkePJ0j7roWmUJhXN6WIba6RnV0PxQh2r9ELnrit6-HaLF7rh9dvUj81XoUiz50ObiGfmKMULr1xCPUywcqqH9_sp0hqKHxCTBUJ_ZagG9McnAwytldVd96VlH0jAjq3CN7-1eUxoZnd4t4rBrAezQ6Z8jN75qSSlHSYWBS3NJiQXA4MqsUuQSiGdKkjI1AWFqLTzD_qJsaD-THkj--e7-iYsRjDIP5QMewgzI3UuyuADsmeJzTwQBI4CvDwgFBLMpE9YK23S4I8LgDTSDDKwrlm0h4Nf9xeEN5Qf3GmTon33FqPtfXIqSLf27wglg\",\r\n    \"refreshToken\": \"eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJhYTQ3NjZkMC1mYTcxLTRjYWUtYTdjNy03N2IxNTFhZmQ3ZjYiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3NDQ3MDU2ODUsImV4cCI6MTc0NDc5MjA4NSwidXNlcklkIjoiOTVkNDM4YTMtODExZC00ZmM5LTgwMGEtYWMyZmM4MmFiYTI4In0.qyVgpodPsM-71pC1d8i5ExT7vJuVi9XH99mX2L5fejdYvLdlT0hSdQ1Dbe9T_eVEL-qB-9QuK5JqAClzfGUY_5oEggP5C24XTqk_Rxmk9dmmbdsGKebHDmmklDcLL3MHdhGQrVi6G4ow03FUO-7IVHsLaG-v5ZlCis-hUptAsoIy9tkEv9R4LdZX6SZbCImuHx2PXHziDZGLVjhfcHgmoTmFYLUwXGjMJBqfbROc_d1CcimN8EDlkh-4xxFj-fq0BrDA1MtNvg4cPvlNUKAIkJMKcGyC9kZFVxuLKFzTMJGvz3UEJeTCNZIvbesM7No_VQtKZX9QEiSYLEK5I5mCkQ\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4110/api/v1/authentication/user/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "4110",
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"user",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth | user",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"exampleUserFirstName\",\r\n    \"lastName\": \"exampleUserSurName\",\r\n    \"email\": \"exampleUser@gmail.com\",\r\n    \"password\": \"exampleUser\",\r\n    \"phoneNumber\": \"01234567890\",\r\n    \"userType\" : \"USER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4110/api/v1/authentication/user/register",
+							"host": [
+								"localhost"
+							],
+							"port": "4110",
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the JSON response\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Check if the response contains accessToken and refreshToken\r",
+									"if (response.isSuccess && response.response.accessToken && response.response.refreshToken) {\r",
+									"    // Set the tokens as environment variables for user\r",
+									"    pm.environment.set(\"USER_ACCESS_TOKEN\", response.response.accessToken);\r",
+									"    pm.environment.set(\"USER_REFRESH_TOKEN\", response.response.refreshToken);\r",
+									"    \r",
+									"    console.log(\"User Access Token and Refresh Token have been set successfully.\");\r",
+									"} else {\r",
+									"    console.error(\"Failed to extract user tokens from the response.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"exampleUser@gmail.com\",\r\n    \"password\": \"exampleUser\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4110/api/v1/authentication/user/login",
+							"host": [
+								"localhost"
+							],
+							"port": "4110",
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the JSON response\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Check if the response contains accessToken and refreshToken\r",
+									"if (response.isSuccess && response.response.accessToken && response.response.refreshToken) {\r",
+									"    // Set the new tokens as environment variables\r",
+									"    pm.environment.set(\"USER_ACCESS_TOKEN\", response.response.accessToken);\r",
+									"    pm.environment.set(\"USER_REFRESH_TOKEN\", response.response.refreshToken);\r",
+									"    \r",
+									"    console.log(\"User Access Token and Refresh Token have been updated successfully.\");\r",
+									"} else {\r",
+									"    console.error(\"Failed to update User tokens. Check the response structure or success status.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refreshToken\": \"eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiIwNTdkMzFhYS04ZDVmLTQyNGItOTVhYi03YzEwMTdiODlkZjMiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3NDQ3MDU3NTMsImV4cCI6MTc0NDc5MjE1MywidXNlcklkIjoiY2FhYzA3ZjctNmE4OS00N2I4LWFlYmQtYTQwY2ExZTAwNDk1In0.hIDGPdflUbg1XFrn9u6lXW4Sof0Yp4NFQYvJCcRxIteuix9mTw1ZMTjqI5ONWGISQbNEKzxE2EIr9BgqcamH79gvnTyT7R9iZF-DJ3lSFeSTpz1gVeRximsGXrRHoQVwyi44ieT4KJ_RTQ53GqU1A8_t7jvJEsF8xrdsDRFCEfO_0OnVAm9IjQccqx65UYIOH8DjS8g3x9Us6KfQz6V--KHhtrSvBhtv8MBIGJaZ4sgr29i2T8t1vIzTPUO3wMiUiNcC5__ZdDuPVmigMbfGjwA8qjgm0O9Sr-bGnqCKYok55bcmw0H0LaFFudjCeN1gGwzI5b_lZGttmLE67r0Dew\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4110/api/v1/authentication/user/refresh-token",
+							"host": [
+								"localhost"
+							],
+							"port": "4110",
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"user",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the response\r",
+									"if (pm.response.code === 200) {\r",
+									"    const response = pm.response.json();\r",
+									"    \r",
+									"    // Check if the response is successful\r",
+									"    if (response.isSuccess) {\r",
+									"        // Set USER_ACCESS_TOKEN and USER_REFRESH_TOKEN to empty strings in the environment\r",
+									"        pm.environment.set(\"USER_ACCESS_TOKEN\", \"\");\r",
+									"        pm.environment.set(\"USER_REFRESH_TOKEN\", \"\");\r",
+									"        console.log(\"Tokens cleared successfully.\");\r",
+									"    } else {\r",
+									"        console.log(\"Logout was not successful, tokens not cleared.\");\r",
+									"    }\r",
+									"} else {\r",
+									"    console.log(\"Request failed, tokens not cleared.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accessToken\": \"eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJlNzAzMjQ2NS05MjlhLTQ5ODUtODg5Ny1lNGFiNzJhZTI3NzkiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3NDQ3MDU3NjksImV4cCI6MTc0NDcwNzU2OSwidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVVc2VyU3VyTmFtZSIsInVzZXJQaG9uZU51bWJlciI6IjAxMjM0NTY3ODkwIiwidXNlckVtYWlsIjoiZXhhbXBsZVVzZXJAZ21haWwuY29tIiwidXNlclR5cGUiOiJVU0VSIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVVc2VyRmlyc3ROYW1lIiwidXNlcklkIjoiY2FhYzA3ZjctNmE4OS00N2I4LWFlYmQtYTQwY2ExZTAwNDk1In0.HAyRjgCijwHpH0Dk3j-LVMHKNgm-LG8DUJGGc1k9Q4cxr--N68UMQ0xAcN1jJ1LfoprLW9uMLpgJ_4ckXIMylYgUcfbvDVyRj8Q7khvGDFWUxROvbktFC1Dig978QEeCTnEWKotYxeisnpbvJ_0RSnz_QSNZ_CBhQgpF78oxU65aGBLN-HUXaUh4RZs2ufhxMlK70pW4SSA-OnAyAk34WnBPkNjeIwwtgLkT7Lhf57PnSIIWz_GV2yTuqqlnlR6be2XjMfZjxshHVho8V-OmxOKLQ4Vmv1uSK_hzzrf1deCbflDvt1WM0slE0E8eW_biRfecKHjk2XZ6qSNrEipr1Q\",\r\n    \"refreshToken\": \"eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiIwNTdkMzFhYS04ZDVmLTQyNGItOTVhYi03YzEwMTdiODlkZjMiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3NDQ3MDU3NTMsImV4cCI6MTc0NDc5MjE1MywidXNlcklkIjoiY2FhYzA3ZjctNmE4OS00N2I4LWFlYmQtYTQwY2ExZTAwNDk1In0.hIDGPdflUbg1XFrn9u6lXW4Sof0Yp4NFQYvJCcRxIteuix9mTw1ZMTjqI5ONWGISQbNEKzxE2EIr9BgqcamH79gvnTyT7R9iZF-DJ3lSFeSTpz1gVeRximsGXrRHoQVwyi44ieT4KJ_RTQ53GqU1A8_t7jvJEsF8xrdsDRFCEfO_0OnVAm9IjQccqx65UYIOH8DjS8g3x9Us6KfQz6V--KHhtrSvBhtv8MBIGJaZ4sgr29i2T8t1vIzTPUO3wMiUiNcC5__ZdDuPVmigMbfGjwA8qjgm0O9Sr-bGnqCKYok55bcmw0H0LaFFudjCeN1gGwzI5b_lZGttmLE67r0Dew\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4110/api/v1/authentication/user/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "4110",
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"user",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "car service",
+			"item": [
+				{
+					"name": "car | admin",
+					"item": [
+						{
+							"name": "assign Car To User",
+							"item": [
+								{
+									"name": "Assign Car to User",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"licensePlate\": \"34 ABC 312\",\r\n  \"model\": \"Focus\",\r\n  \"brand\": \"Ford\",\r\n  \"userId\": \"caac07f7-6a89-47b8-aebd-a40ca1e00495\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/v1/cars",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Assign Car To User | LicensePlateAlreadyExistsException Exception",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"licensePlate\": \"34 ABC 123\",\r\n  \"model\": \"Corolla\",\r\n  \"brand\": \"Toyota\",\r\n  \"userId\": \"caac07f7-6a89-47b8-aebd-a40ca1e00495\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/v1/cars",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Assign Car To User | Licence Plate Verification Exception",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"licensePlate\": \"99 ABC 123\",\r\n  \"model\": \"Astra\",\r\n  \"brand\": \"Opel\",\r\n  \"userId\": \"caac07f7-6a89-47b8-aebd-a40ca1e00495\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/v1/cars",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "get Car By Id",
+							"item": [
+								{
+									"name": "get Car By Existing Id",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:4110/api/v1/cars/:carId",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars",
+												":carId"
+											],
+											"variable": [
+												{
+													"key": "carId",
+													"value": "37ccf802-a4c8-4a2e-9d86-f6e423353e6b"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get Car By Non Existing Id",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:4110/api/v1/cars/:carId",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars",
+												":carId"
+											],
+											"variable": [
+												{
+													"key": "carId",
+													"value": "37ccf802-a4c8-4a2e-9d86-f6e423353e6a"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "get all cars by user",
+							"item": [
+								{
+									"name": "get all cars by user Id",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"pagination\": {\r\n    \"pageNumber\": 1,\r\n    \"pageSize\": 10\r\n  }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/v1/cars/users/:userId",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars",
+												"users",
+												":userId"
+											],
+											"variable": [
+												{
+													"key": "userId",
+													"value": "caac07f7-6a89-47b8-aebd-a40ca1e00495"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all cars by Non Exsiting User Id",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"pagination\": {\r\n    \"pageNumber\": 1,\r\n    \"pageSize\": 10\r\n  }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/v1/cars/users/:userId",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars",
+												"users",
+												":userId"
+											],
+											"variable": [
+												{
+													"key": "userId",
+													"value": "caac07f7-6a89-47b8-aebd-a40ca1e00491"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "get all cars",
+							"item": [
+								{
+									"name": "get all cars",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"pagination\": {\r\n    \"pageNumber\": 1,\r\n    \"pageSize\": 10\r\n  }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/v1/cars/all",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars",
+												"all"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "get all active cars",
+							"item": [
+								{
+									"name": "get all active cars",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"pagination\": {\r\n    \"pageNumber\": 1,\r\n    \"pageSize\": 10\r\n  }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/v1/cars/allcarsByActiveStatus",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars",
+												"allcarsByActiveStatus"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "update a car",
+							"item": [
+								{
+									"name": "update a car",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"licensePlate\": \"34 XY 123\",\r\n  \"model\": \"Passat\",\r\n  \"brand\": \"Volkswagen\",\r\n  \"status\": \"DELETED\",\r\n  \"userId\": \"caac07f7-6a89-47b8-aebd-a40ca1e00495\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/v1/cars/:carId",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars",
+												":carId"
+											],
+											"variable": [
+												{
+													"key": "carId",
+													"value": "37ccf802-a4c8-4a2e-9d86-f6e423353e6b"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "delete a car",
+							"item": [
+								{
+									"name": "delete a car",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "localhost:4110/api/v1/cars/:carId",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars",
+												":carId"
+											],
+											"variable": [
+												{
+													"key": "carId",
+													"value": "37ccf802-a4c8-4a2e-9d86-f6e423353e6b"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "car | user",
+					"item": [
+						{
+							"name": "assign Car To User",
+							"item": [
+								{
+									"name": "Assign Car To User",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{USER_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"licensePlate\": \"34 ABC 123\",\r\n  \"model\": \"Corolla\",\r\n  \"brand\": \"Toyota\",\r\n  \"userId\": \"caac07f7-6a89-47b8-aebd-a40ca1e00495\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/v1/cars",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Assign Car To User | LicensePlateAlreadyExistsException Exception",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{USER_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"licensePlate\": \"34 ABC 123\",\r\n  \"model\": \"Corolla\",\r\n  \"brand\": \"Toyota\",\r\n  \"userId\": \"caac07f7-6a89-47b8-aebd-a40ca1e00495\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/v1/cars",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Assign Car To User | Licence Plate Verification Exception",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{USER_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"licensePlate\": \"99 ABC 123\",\r\n  \"model\": \"Astra\",\r\n  \"brand\": \"Opel\",\r\n  \"userId\": \"caac07f7-6a89-47b8-aebd-a40ca1e00495\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/v1/cars",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "get Car By Id",
+							"item": [
+								{
+									"name": "get Car By Existing Id",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{USER_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:4110/api/v1/cars/:carId",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars",
+												":carId"
+											],
+											"variable": [
+												{
+													"key": "carId",
+													"value": "37ccf802-a4c8-4a2e-9d86-f6e423353e6b"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get Car By Non Existing Id",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{USER_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:4110/api/v1/cars/:carId",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars",
+												":carId"
+											],
+											"variable": [
+												{
+													"key": "carId",
+													"value": "37ccf802-a4c8-4a2e-9d86-f6e423353e6a"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "get all cars by user",
+							"item": [
+								{
+									"name": "get all cars by user Id",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{USER_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"pagination\": {\r\n    \"pageNumber\": 1,\r\n    \"pageSize\": 10\r\n  }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/v1/cars/users/:userId",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars",
+												"users",
+												":userId"
+											],
+											"variable": [
+												{
+													"key": "userId",
+													"value": "caac07f7-6a89-47b8-aebd-a40ca1e00495"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all cars by Non Exsiting User Id",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{USER_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"pagination\": {\r\n    \"pageNumber\": 1,\r\n    \"pageSize\": 10\r\n  }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/v1/cars/users/:userId",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars",
+												"users",
+												":userId"
+											],
+											"variable": [
+												{
+													"key": "userId",
+													"value": "caac07f7-6a89-47b8-aebd-a40ca1e00491"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "update a car",
+							"item": [
+								{
+									"name": "update a car",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"licensePlate\": \"34 AB 123\",\r\n  \"model\": \"Passat\",\r\n  \"brand\": \"Volkswagen\",\r\n  \"status\": \"ACTIVE\",\r\n  \"userId\": \"caac07f7-6a89-47b8-aebd-a40ca1e00495\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/v1/cars/:carId",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"v1",
+												"cars",
+												":carId"
+											],
+											"variable": [
+												{
+													"key": "carId",
+													"value": "37ccf802-a4c8-4a2e-9d86-f6e423353e6b"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "service | admin",
+					"item": [
+						{
+							"name": "create Service",
+							"item": [
+								{
+									"name": "Create Service 1",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"title\": \"Engine Check\",\r\n  \"description\": \"Full diagnostic engine service\",\r\n  \"status\": \"CREATED\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/services",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"services"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create Service 2",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"title\": \"Tire Replacement\",\r\n  \"description\": \"Replaced all four tires with new ones\",\r\n  \"status\": \"CREATED\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/services",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"services"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "assign Service to Car",
+							"item": [
+								{
+									"name": "assign Service to Car 1",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"carId\": \"37ccf802-a4c8-4a2e-9d86-f6e423353e6b\",\r\n  \"serviceId\": \"80f9ba54-bdb4-4940-8647-41efea1afd1c\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/services/assign",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"services",
+												"assign"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "assign Service to Car 2",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"carId\": \"37ccf802-a4c8-4a2e-9d86-f6e423353e6b\",\r\n  \"serviceId\": \"74d159d5-13c0-4b37-b5c4-1fc2bcebb2c9\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/services/assign",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"services",
+												"assign"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "get All Services with Pagination",
+							"item": [
+								{
+									"name": "Get All Services With Pagination",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"pagination\": {\r\n    \"pageNumber\": 1,\r\n    \"pageSize\": 10\r\n  }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/services/all",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"services",
+												"all"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "get Services by Car ID with Pagination",
+							"item": [
+								{
+									"name": "get Services by Car ID with Pagination",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"pagination\": {\r\n    \"pageNumber\": 1,\r\n    \"pageSize\": 10\r\n  }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/services/car/:carId",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"services",
+												"car",
+												":carId"
+											],
+											"variable": [
+												{
+													"key": "carId",
+													"value": "37ccf802-a4c8-4a2e-9d86-f6e423353e6b"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "update service by car",
+							"item": [
+								{
+									"name": "update service by car",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"title\": \"Brake Inspection\",\r\n  \"description\": \"Pads replaced, rotors checked\",\r\n  \"status\": \"IN_PROGRESS\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/services/car/:carId/service/:serviceId",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"services",
+												"car",
+												":carId",
+												"service",
+												":serviceId"
+											],
+											"variable": [
+												{
+													"key": "carId",
+													"value": "37ccf802-a4c8-4a2e-9d86-f6e423353e6b"
+												},
+												{
+													"key": "serviceId",
+													"value": "80f9ba54-bdb4-4940-8647-41efea1afd1c"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "services by filter",
+							"item": [
+								{
+									"name": "services by filter",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"filterRequest\": {\r\n    \"filter\": {\r\n      \"carId\": \"37ccf802-a4c8-4a2e-9d86-f6e423353e6b\",\r\n      \"status\": \"IN_PROGRESS\"\r\n    }\r\n  },\r\n  \"pagingRequest\": {\r\n    \"pagination\": {\r\n      \"pageNumber\": 1,\r\n      \"pageSize\": 10\r\n    }\r\n  }\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/services/filter",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"services",
+												"filter"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "services by filter with Status",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"filterRequest\": {\r\n    \"filter\": {\r\n      \"status\": \"IN_PROGRESS\"\r\n    }\r\n  },\r\n  \"pagingRequest\": {\r\n    \"pagination\": {\r\n      \"pageNumber\": 1,\r\n      \"pageSize\": 10\r\n    }\r\n  }\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/services/filter",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"services",
+												"filter"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "services by filter with Car Id",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{ADMIN_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"filterRequest\": {\r\n    \"filter\": {\r\n      \"carId\": \"37ccf802-a4c8-4a2e-9d86-f6e423353e6b\"\r\n    }\r\n  },\r\n  \"pagingRequest\": {\r\n    \"pagination\": {\r\n      \"pageNumber\": 1,\r\n      \"pageSize\": 10\r\n    }\r\n  }\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:4110/api/services/filter",
+											"host": [
+												"localhost"
+											],
+											"port": "4110",
+											"path": [
+												"api",
+												"services",
+												"filter"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
