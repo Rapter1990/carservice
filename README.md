@@ -1,7 +1,7 @@
 # Case Study - Car Service
 
 <p align="center">
-    <img src="screenshots/main.png" alt="Main Information" width="800" height="500">
+    <img src="screenshots/main.png" alt="Main Information" width="800" height="650">
 </p>
 
 ### 📖 Information
